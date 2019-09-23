@@ -32,8 +32,8 @@ public class Personaje {
 		return false;
 	}
 	
-	public void elegirItem(int itemNumber) {
-		
+	public Articulo elegirItem(int itemNumber) {
+		return this.items[itemNumber - 1];
 	}
 
 	public void sumarMonedas(int cantMonedas) {

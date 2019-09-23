@@ -15,14 +15,18 @@ public class PersonajeTest {
 	}
 	
 	@Test
-	public void test() {
+	public void cuandoNoRecogiNingunItem_noPuedoElegirItem() {
+		assertEquals(null, personaje.elegirItem(1));
+		
+	}
+
+	@Test
+	public void cuandoRecogiAlgunItem_puedoElegirlo() {
 		Articulo articulo = new ItemUno();
 		
-		assertEquals(null, personaje.elegirItem(1));
 		personaje.recogerItem(articulo);
 		
 		assertEquals(articulo, personaje.elegirItem(1));
-		
 	}
 
 }

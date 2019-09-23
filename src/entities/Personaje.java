@@ -1,17 +1,20 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class Personaje {
 	
 	private boolean turno;
-	private Articulo[] items;
+	private List<Articulo> items;
 	private int monedas;
 	private int estrellas;
 	
 	public Personaje() {
 		this.turno = false;
-		this.items = new Articulo[10];
+		this.items = new LinkedList<Articulo>();
 		this.monedas = 0;
 		this.estrellas = 0;
 	}
@@ -21,7 +24,9 @@ public class Personaje {
 	}
 	
 	public int tirarDado() {
-		return (new Random()).nextInt() % 6 + 1;
+		int menorValor = 1;
+		int mayorValor = 6;
+		return menorValor + (new Random()).nextInt() % (mayorValor - menorValor + 1);
 	}
 	
 	public boolean mover() {
@@ -33,7 +38,7 @@ public class Personaje {
 	}
 	
 	public Articulo elegirItem(int itemNumber) {
-		return this.items[itemNumber - 1];
+		return (--itemNumber >= 0 && itemNumber < items.size()) ? this.items.get(itemNumber) : null;
 	}
 
 	public void sumarMonedas(int cantMonedas) {
@@ -49,14 +54,7 @@ public class Personaje {
 	}
 	
 	public void recogerItem(Articulo articulo) {
-		boolean noSeUbico = true;
-		for(int i=0; i<items.length; i++) {
-			if(noSeUbico) 
-				if(items[i] == null) {
-					items[i] = articulo;
-					noSeUbico = false;
-				}
-		}
+		this.items.add(articulo);
 	}
 
 }

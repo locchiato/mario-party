@@ -5,10 +5,10 @@ import java.util.Timer;
 
 public class Mapa {
 
-	private Efecto[][] efectos;
+	private Casilla[][] tablero;
 
-	public void cargarEfectos(Efecto[][] efectos) {
-		this.efectos = efectos;
+	public void cargarTablero(Casilla[][] tablero) {
+		this.tablero = tablero;
 	}
 	
 }

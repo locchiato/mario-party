@@ -6,5 +6,4 @@ public enum Efecto {
 	RESTAR_MONEDAS,
 	ACTIVAR_TRAMPA,
 	OBTENER_ARTICULO;
-	
 }

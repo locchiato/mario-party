@@ -18,9 +18,10 @@ public class PersonajeTest {
 	public void test() {
 		Articulo articulo = new ItemUno();
 		
+		assertEquals(null, personaje.elegirItem(1));
 		personaje.recogerItem(articulo);
 		
-		personaje.elegirItem(1);
+		assertEquals(articulo, personaje.elegirItem(1));
 		
 	}
 

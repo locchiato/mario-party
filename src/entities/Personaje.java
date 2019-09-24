@@ -23,12 +23,6 @@ public class Personaje {
 		turno = true;
 	}
 	
-	public int tirarDado() {
-		int menorValor = 1;
-		int mayorValor = 6;
-		return menorValor + (new Random()).nextInt() % (mayorValor - menorValor + 1);
-	}
-	
 	public boolean mover() {
 		return true;
 	}
@@ -38,7 +32,12 @@ public class Personaje {
 	}
 	
 	public Articulo elegirItem(int itemNumber) {
-		return (--itemNumber >= 0 && itemNumber < items.size()) ? this.items.get(itemNumber) : null;
+		if (--itemNumber >= 0 && itemNumber < items.size()) {
+			Articulo item = this.items.get(itemNumber);
+			if(item != null) this.items.remove(itemNumber);
+			return item;
+		}
+		return null;
 	}
 
 	public void sumarMonedas(int cantMonedas) {

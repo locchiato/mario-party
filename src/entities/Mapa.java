@@ -2,8 +2,10 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Timer;
+import java.util.Scanner;
 
 import entities.Casilla;
 import entities.Dado;
@@ -11,28 +13,18 @@ import entities.Jugador;
 import entities.Minijuego;
 import entities.Personaje;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
-
-
 public class Mapa {
 
-	private Casilla[][] tablero;
+	private Casilla[][] tablero; // Por ahora un vector simple para testear
 	private List<Personaje> jugadores = new LinkedList<Personaje>();
 	private List<Integer> turnos = new LinkedList<Integer>();
 	private Dado dado;
 	private int turnosPendientes;
 	private List<Minijuego> minijuegos = new ArrayList<Minijuego>();
-	public void cargarTablero(Casilla[][] tablero) {
-		this.tablero = tablero;
-	}
-	
-	
-	public Mapa( List<Jugador> listaJug) throws FileNotFoundException {
+
+	// Constructor , aca comienza la partida
+
+	public Mapa(List<Jugador> listaJug) throws FileNotFoundException {
 		int i = 0;
 		this.dado = new Dado(1, 6);
 		for (Jugador jug : listaJug) {
@@ -44,7 +36,8 @@ public class Mapa {
 		ordenTurnos();
 		inicioJuego();
 	}
-	
+
+	// Cargar casillas con efectos aleatorios
 	public void rellenarCasillas(String tArchivo) throws FileNotFoundException {
 
 		Scanner sc = new Scanner(new File(tArchivo));
@@ -63,7 +56,7 @@ public class Mapa {
 			linea = sc.nextLine();
 			char[] miArray = linea.toCharArray();
 			puntRecor = 0;
-			j=0;
+			j = 0;
 			while (j < columna) {
 				caracter = miArray[puntRecor];
 
@@ -91,22 +84,36 @@ public class Mapa {
 
 				j++;
 			}
-
 		}
 		sc.close();
 
 	}
-	
+
+	// Aca se ve el orden de cada uno
 	public void ordenTurnos() {
 		for (Personaje pj : this.jugadores) {
 			this.turnos.add(pj.getNumJug());
 		}
 	}
-	
+
 	public void inicioJuego() {
 		// Aca se van a jugar las rondas hasta ver quien gana
 	}
-	
-	
-}
 
+	public void siguienteTurno() {
+
+	}
+
+	public boolean esFinRonda() {
+		return this.turnosPendientes == 0;
+	}
+
+	public void finRonda() {
+		if (this.esFinRonda()) {
+			// Aca se jugara el minijuego entre los personajes , las recompensas y perdidas
+			// se veran
+			// segun el minijuego jugado
+		}
+	}
+
+}

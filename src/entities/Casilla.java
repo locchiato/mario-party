@@ -4,17 +4,25 @@ import entities.Personaje;
 
 public class Casilla {
 	private int x;
+	private int y;
 	private int tipoCasilla;
+	private String dirSig;
 
-	public Casilla(int x, int tipo) { // Por ahora x
+	public Casilla(int x, int y, int tipo, String dirSig) {
 		this.x = x;
+		this.y = y;
 		this.tipoCasilla = tipo;
+		this.dirSig = dirSig;
+	}
+
+	public String getDirSig() {
+		return dirSig;
 	}
 
 	public int getX() {
 		return x;
 	}
-
+	
 	public void setX(int x) {
 		this.x = x;
 	}

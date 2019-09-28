@@ -94,9 +94,9 @@ public class Personaje {
 		return false;
 	}
 
-	public void esTuTurno() {
-		turno = true;
-	}
+//	public void esTuTurno() {
+//		turno = true;
+//	}
 
 	public void avanzar(int posiciones) {
 		

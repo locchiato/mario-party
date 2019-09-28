@@ -43,7 +43,7 @@ public class Mapa {
 		String Path = "C:\\Desktop\\Programacion Avanzada\\Mario Party\\mario-party\\";
 		Scanner sc = new Scanner(new File(Path+"tablero.in"));
 
-		int x, y, tipoCasilla,xSig,ySig,xAnt,yAnt;
+		int x, y, tipoCasilla,xSig,ySig,xAnt,yAnt,xAlter,yAlter;
 
 		while (sc.hasNext()) {
 			x = sc.nextInt();
@@ -61,8 +61,10 @@ public class Mapa {
 			ySig=sc.nextInt();
 			xAnt=sc.nextInt();
 			yAnt=sc.nextInt();
+			xAlter=sc.nextInt();
+			yAlter=sc.nextInt();
 			
-			tablero[x][y] = new CasillaDecision(x, y, tipoCasilla,tablero[xSig][ySig],tablero[xAnt][yAnt]);
+			tablero[x][y] = new Casilla(x, y, tipoCasilla,tablero[xSig][ySig],tablero[xAnt][yAnt],tablero[xAlter][yAlter]);
 		}
 		sc.close();
 	

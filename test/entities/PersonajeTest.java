@@ -31,7 +31,7 @@ public class PersonajeTest {
 	
 	@Test
 	public void pisarCasillaMonedas() {
-		Casilla casilla1 = new Casilla(1,2,1,null);
+		Casilla casilla1 = new Casilla(1,2,1);
 		personaje.setCasillaActual(casilla1);
 		casilla1.aplicarEfecto(personaje);
 		assertEquals(10, personaje.getMonedas());

@@ -18,6 +18,15 @@ public class Casilla {
 		this.tipoCasilla = tipo;
 	}
 	
+	public Casilla(int x, int y, int tipo,Casilla ant , Casilla sig , Casilla alternativa) {
+		this.x = x;
+		this.y = y;
+		this.tipoCasilla = tipo;
+		this.casillaAlternativa = alternativa;
+		this.casillaAnt = ant;
+		this.casillaSig = sig;
+	}
+	
 	public void aplicarEfecto(Personaje pj) {
 		switch (this.tipoCasilla) {
 		case 1:
@@ -40,13 +49,15 @@ public class Casilla {
 			pj.sumarMonedas(-10);
 		case 6:
 			// GanaItemAleatorio
-			break;
-		case 7:
-			// casilla decision
-			
-			break;	
-			
+			break;				
 		}
+	}
+	
+	public Casilla decision(boolean eleccion) {
+		if(eleccion) {
+			return this.casillaSig;			
+		}
+		return this.casillaAlternativa;
 	}
 
 	public Casilla getCasillaSig() {

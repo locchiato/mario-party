@@ -1,12 +1,9 @@
 package entities;
 
-public class Minijuego {
+public abstract class Minijuego {
 	private int cantJugadores;
 	private boolean inicio;
 	
-	
-	private void iniciarJuego() {
-		this.inicio = true;
-	}
+	public abstract void jugar();
 
 }

@@ -32,58 +32,51 @@ public class Mapa {
 			i++;
 		}
 		this.turnosPendientes = this.jugadores.size();
-		rellenarCasillas("tablero.in");
+		rellenarCasillas();
 		ordenTurnos();
 		inicioJuego();
 	}
 
 	// Cargar casillas con efectos aleatorios
-	public void rellenarCasillas(String tArchivo) throws FileNotFoundException {
 
-		Scanner sc = new Scanner(new File(tArchivo));
-		int fila;
-		int columna;
-		int j = 0;
-		String linea = sc.nextLine();
-		int puntRecor;
-		char caracter;
+	public void rellenarCasillas() throws FileNotFoundException {
+		String Path = "C:\\Desktop\\Programacion Avanzada\\Mario Party\\mario-party\\";
+		Scanner sc = new Scanner(new File(Path+"tablero.in"));
 
-		fila = Integer.parseInt(linea.split(" ")[0]);
-		columna = Integer.parseInt(linea.split(" ")[1]);
-		this.tablero = new Casilla[fila][columna];
+		int x, y, tipoCasilla,xSig,ySig,xAnt,yAnt;
 
-		for (int i = 0; i < fila; i++) {
-			linea = sc.nextLine();
-			char[] miArray = linea.toCharArray();
-			puntRecor = 0;
-			j = 0;
-			while (j < columna) {
-				caracter = miArray[puntRecor];
-
-				switch (caracter) {
-				case '1':// casilla vacia
-					tablero[i][j] = new Casilla(i, j, 1, null);
-					break;
-				case '2':// casilla sumamonedas
-					tablero[i][j] = new Casilla(i, j, 2, "" + miArray[puntRecor + 1]);
-					break;
-				case '5':// casilla pierdemonedas
-					tablero[i][j] = new Casilla(i, j, 5, "" + miArray[puntRecor + 1]);
-					break;
-				case '7':// casilla union
-					tablero[i][j] = new Casilla(i, j, 7, "" + miArray[puntRecor + 1] + miArray[puntRecor + 2]);
-					break;
-				}
-
-				if (tablero[i][j].getTipoCasilla() == 1)
-					puntRecor++;
-				else if (tablero[i][j].getTipoCasilla() != 7)
-					puntRecor += 2;
-				else
-					puntRecor += 3;
-
-				j++;
-			}
+		while (sc.hasNext()) {
+			x = sc.nextInt();
+			y = sc.nextInt();
+			tipoCasilla = sc.nextInt();
+			tablero[x][y] = new Casilla(x, y, tipoCasilla);
+		}
+		
+		sc = new Scanner(new File("casillasDesicion.in"));
+		while (sc.hasNext()) {
+			x = sc.nextInt();
+			y = sc.nextInt();
+			tipoCasilla = sc.nextInt();
+			xSig=sc.nextInt();
+			ySig=sc.nextInt();
+			xAnt=sc.nextInt();
+			yAnt=sc.nextInt();
+			
+			tablero[x][y] = new CasillaDecision(x, y, tipoCasilla,tablero[xSig][ySig],tablero[xAnt][yAnt]);
+		}
+		sc.close();
+	
+		sc = new Scanner(new File("uniones.in"));
+		while (sc.hasNext()) {
+			x = sc.nextInt();
+			y = sc.nextInt();
+			xSig=sc.nextInt();
+			ySig=sc.nextInt();
+			xAnt=sc.nextInt();
+			yAnt=sc.nextInt();
+			
+			tablero[x][y].setCasillaAnt(tablero[xSig][ySig]);
+			tablero[x][y].setCasillaSig(tablero[xAnt][yAnt]);
 		}
 		sc.close();
 

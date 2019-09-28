@@ -1,5 +1,6 @@
 package entities;
 
+
 import entities.Personaje;
 
 public class Casilla {

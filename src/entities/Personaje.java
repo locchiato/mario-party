@@ -8,7 +8,7 @@ import entities.Articulo;
 import entities.Casilla;
 
 public class Personaje {
-	
+
 	private String nombre;
 	private boolean turno;
 	private List<Articulo> items;
@@ -18,10 +18,10 @@ public class Personaje {
 	private String estado;
 	private int numJug;
 	private int turnosParalizados;
-	
+
 	// Se le pone un nombre al personaje (nickname)
 	// Se le pone numero de personaje (posicion)
-	public Personaje(String nom,int num) {
+	public Personaje(String nom, int num) {
 		this.turno = false;
 		this.nombre = nom;
 		this.monedas = 0;
@@ -30,7 +30,7 @@ public class Personaje {
 		this.numJug = num;
 		this.items = new ArrayList<Articulo>();
 	}
-	
+
 	// Setters y Getters
 
 	public String getNombre() {
@@ -80,9 +80,9 @@ public class Personaje {
 	public void setNumJug(int numJug) {
 		this.numJug = numJug;
 	}
-	
+
 	// Funciones del personaje
-	
+
 	public boolean puedeMoverse() {
 		if (estado == "Vivo") {
 			return true;
@@ -97,15 +97,32 @@ public class Personaje {
 	public void esTuTurno() {
 		turno = true;
 	}
-	
-	public boolean mover() {
-		return true;
+
+	public void avanzar(int posiciones) {
+		
+		if(puedeMoverse()) {
+			for (int i = 0; i < posiciones; i++) {
+				
+				if(casillaActual.getTipoCasilla() == 7 ) { //7 valor casilla tipo decision
+					casillaActual = casillaActual.aplicarEfecto(this); //preguntar 
+				}	
+				else {
+					casillaActual= casillaActual.casillaSig;
+				}
+			}
+		}
 	}
-	
+
+	public void Retroceder(int posiciones) {
+		for (int i = 0; i < posiciones; i++) {
+				casillaActual= casillaActual.casillaAnt;
+		}
+	}
+
 	public boolean colision() {
 		return false;
 	}
-	
+
 	public Personaje seleccionarPersonaje(LinkedList<Personaje> lista) {
 		int i = 0, num;
 		for (Personaje pj : lista) {
@@ -119,11 +136,11 @@ public class Personaje {
 		return lista.get(num);
 	}
 
-	
 	public Articulo elegirItem(int itemNumber) {
 		if (--itemNumber >= 0 && itemNumber < items.size()) {
 			Articulo item = this.items.get(itemNumber);
-			if(item != null) this.items.remove(itemNumber);
+			if (item != null)
+				this.items.remove(itemNumber);
 			return item;
 		}
 		return null;
@@ -136,25 +153,24 @@ public class Personaje {
 	public void quitarMonedas(int cantMonedas) {
 		this.monedas -= cantMonedas;
 	}
-	
+
 	public void paralizado() {
 		this.setEstado("Paralizado");
 		this.turnosParalizados = 2;
 	}
-	
+
 	public void obtenerEstrella() {
 		this.estrellas++;
 	}
-	
+
 	public void recogerItem(Articulo articulo) {
 		this.items.add(articulo);
 	}
-	
+
 	public boolean esGanador() {
 		if (this.estrellas == 5) {
 			return true;
-		}
-		else if (this.casillaActual.getTipoCasilla() == 7) {
+		} else if (this.casillaActual.getTipoCasilla() == 7) {
 			return true;
 		}
 		return false;

@@ -10,7 +10,7 @@ import entities.Casilla;
 public class Personaje {
 
 	private String nombre;
-	private boolean turno;
+	//private boolean turno;
 	private List<Articulo> items;
 	private int monedas;
 	private int estrellas;
@@ -22,7 +22,7 @@ public class Personaje {
 	// Se le pone un nombre al personaje (nickname)
 	// Se le pone numero de personaje (posicion)
 	public Personaje(String nom, int num) {
-		this.turno = false;
+		//this.turno = false;
 		this.nombre = nom;
 		this.monedas = 0;
 		this.estrellas = 0;
@@ -104,18 +104,22 @@ public class Personaje {
 			for (int i = 0; i < posiciones; i++) {
 				
 				if(casillaActual.getTipoCasilla() == 7 ) { //7 valor casilla tipo decision
-					casillaActual = casillaActual.aplicarEfecto(this); //preguntar 
+					casillaActual = casillaActual.decision(eleccion()); //preguntar 
 				}	
 				else {
-					casillaActual= casillaActual.casillaSig;
+					casillaActual= casillaActual.getCasillaSig();
 				}
 			}
 		}
 	}
+	
+	public boolean eleccion() {
+		/// preguntar al jugador por donde quiere ir 
+	}
 
 	public void Retroceder(int posiciones) {
 		for (int i = 0; i < posiciones; i++) {
-				casillaActual= casillaActual.casillaAnt;
+				casillaActual= casillaActual.getCasillaAnt();
 		}
 	}
 

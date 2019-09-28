@@ -4,18 +4,20 @@ package entities;
 import entities.Personaje;
 
 public class Casilla {
-	protected int x;
-	protected int y;
-	protected int tipoCasilla;
-	protected Casilla casillaSig;
-	protected Casilla casillaAnt;
+	private int x;
+	private int y;
+	private int tipoCasilla;
+	private Casilla casillaSig;
+	private Casilla casillaAnt;
+	private Casilla casillaAlternativa;
+	private boolean decision; //eligio casilla alternativa (izq) false / eligio casilla siguiente (derecha) true
 
 	public Casilla(int x, int y, int tipo) {
 		this.x = x;
 		this.y = y;
 		this.tipoCasilla = tipo;
 	}
-
+	
 	public void aplicarEfecto(Personaje pj) {
 		switch (this.tipoCasilla) {
 		case 1:
@@ -27,7 +29,6 @@ public class Casilla {
 			break;
 		case 3:
 			// SumaEstrella
-			
 			pj.obtenerEstrella();
 			break;
 		case 4:
@@ -40,6 +41,11 @@ public class Casilla {
 		case 6:
 			// GanaItemAleatorio
 			break;
+		case 7:
+			// casilla decision
+			
+			break;	
+			
 		}
 	}
 
@@ -80,6 +86,22 @@ public class Casilla {
 			return true;
 		}
 		return false;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public Casilla getCasillaAlternativa() {
+		return casillaAlternativa;
+	}
+
+	public void setCasillaAlternativa(Casilla casillaAlternativa) {
+		this.casillaAlternativa = casillaAlternativa;
 	}
 
 

@@ -6,15 +6,27 @@ public class Jugador {
 	private String estado;
 	private String contraseña;
 	
-	public Jugador(String nick,String clave) {
+	public Jugador(String nick, String clave) {
 		this.nickName = nick;
 		this.contraseña = clave;
 	}
-		
-	public String verEstado() {
-		return this.estado;
+
+	public String getNickName() {
+		return nickName;
 	}
-	
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
 	public void estadoListo() {
 		this.estado = "Listo";
 	}

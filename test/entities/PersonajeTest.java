@@ -11,7 +11,7 @@ public class PersonajeTest {
 	
 	@Before
 	public void setUp() {
-		personaje = new Personaje();
+		personaje = new Personaje("Santi12",1);
 	}
 	
 	@Test

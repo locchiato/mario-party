@@ -13,7 +13,7 @@ public class CasillaTest {
 
 	@Before
 	public void setUp() {
-		casilla = new Casilla();
+		casilla = new Casilla(1,1);
 	}
 	
 }

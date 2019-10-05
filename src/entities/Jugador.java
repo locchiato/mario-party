@@ -4,11 +4,11 @@ public class Jugador {
 	
 	private String nickName;
 	private String estado;
-	private String contraseña;
+	private String clave;
 	
 	public Jugador(String nick, String clave) {
 		this.nickName = nick;
-		this.contraseña = clave;
+		this.clave = clave;
 	}
 
 	public String getNickName() {

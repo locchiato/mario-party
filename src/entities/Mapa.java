@@ -15,13 +15,13 @@ import entities.Personaje;
 
 public class Mapa {
 
+	private Dado dado;
 	private Casilla[][] tablero; // Por ahora un vector simple para testear
 	private List<Personaje> jugadores = new LinkedList<Personaje>();
-	private List<Integer> turnos = new LinkedList<Integer>();
-	private Dado dado;
-	private int turnosPendientes;
-	private List<Minijuego> minijuegos = new ArrayList<Minijuego>();
 
+	private List<Minijuego> minijuegos = new ArrayList<Minijuego>();
+	private int turnosPendientes;
+	
 	// Constructor , aca comienza la partida
 
 	public Mapa(List<Jugador> listaJug) throws FileNotFoundException {
@@ -64,21 +64,7 @@ public class Mapa {
 			xAlter=sc.nextInt();
 			yAlter=sc.nextInt();
 			
-			tablero[x][y] = new Casilla(x, y, tipoCasilla,tablero[xSig][ySig],tablero[xAnt][yAnt],tablero[xAlter][yAlter]);
-		}
-		sc.close();
-	
-		sc = new Scanner(new File("uniones.in"));
-		while (sc.hasNext()) {
-			x = sc.nextInt();
-			y = sc.nextInt();
-			xSig=sc.nextInt();
-			ySig=sc.nextInt();
-			xAnt=sc.nextInt();
-			yAnt=sc.nextInt();
-			
-			tablero[x][y].setCasillaAnt(tablero[xSig][ySig]);
-			tablero[x][y].setCasillaSig(tablero[xAnt][yAnt]);
+			tablero[x][y] = new Casilla(x, y, tipoCasilla);
 		}
 		sc.close();
 
@@ -86,9 +72,19 @@ public class Mapa {
 
 	// Aca se ve el orden de cada uno
 	public void ordenTurnos() {
+		List<Integer> turnos = tirarDados();
 		for (Personaje pj : this.jugadores) {
-			this.turnos.add(pj.getNumJug());
+			turnos.add(pj.getNumJug());
 		}
+	}
+
+	private List<Integer> tirarDados() {
+		List<Integer> dados = new ArrayList<>(); 
+		for(Personaje personaje : this.jugadores) {
+			dados.add(this.dado.tirarDado());
+		}
+			
+		return dados;
 	}
 
 	public void inicioJuego() {

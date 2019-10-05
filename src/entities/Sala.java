@@ -8,18 +8,19 @@ public class Sala {
 	private List<Jugador> jugadores;
 	private String estado; // En Espera , Activa, Cerrada
 	private boolean conexion; //Privada = True - Publica = false
-	private String contraceña;
+	private String clave;
 	
-	public Sala(String NombreSala,List<Jugador> jugadores,boolean conexion,String contraceña) {
+	public Sala(String NombreSala, List<Jugador> jugadores, 
+				boolean conexion, String clave) {
 		this.jugadores = jugadores;
 		this.estado = "Espera";
 		this.conexion = conexion;
-		this.contraceña = contraceña;
+		this.clave = clave;
 	}
 	
-	public boolean ingresarSalaPrivada(Jugador jugador,String contraceña) {
+	public boolean ingresarSalaPrivada(Jugador jugador,String clave) {
 		
-		if(!this.estado.equals("Cerrada") && this.contraceña.equals(contraceña)) {
+		if(!this.estado.equals("Cerrada") && this.clave.equals(clave)) {
 			this.jugadores.add(jugador);
 			return true;
 		}
@@ -27,7 +28,7 @@ public class Sala {
 		return false;
 	}
 	
-	public boolean ingresarSalaPublica(Jugador jugador,String contraceña) {
+	public boolean ingresarSalaPublica(Jugador jugador,String clave) {
 		
 		if(!this.estado.equals("Cerrada")) {
 			this.jugadores.add(jugador);
@@ -67,8 +68,8 @@ public class Sala {
 		this.conexion = conexion;
 	}
 
-	public void setContraceña(String contraceña) {
-		this.contraceña = contraceña;
+	public void setClave(String clave) {
+		this.clave = clave;
 	}
 
 }

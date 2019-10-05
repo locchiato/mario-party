@@ -17,6 +17,7 @@ public class Personaje {
 	private Casilla casillaActual;
 	private String estado;
 	private int numJug;
+	
 	private int turnosParalizados;
 
 	// Se le pone un nombre al personaje (nickname)
@@ -99,21 +100,14 @@ public class Personaje {
 //	}
 
 	public void avanzar(int posiciones) {
-		
-		if(puedeMoverse()) {
-			for (int i = 0; i < posiciones; i++) {
-				
-				if(casillaActual.getTipoCasilla() == 7 ) { //7 valor casilla tipo decision
-					casillaActual = casillaActual.decision(eleccion()); //preguntar 
-				}	
-				else {
-					casillaActual= casillaActual.getCasillaSig();
-				}
-			}
-		}
+	}
+	
+	public void llegar() {
+		casillaActual.aplicarEfecto(this);
 	}
 	
 	public boolean eleccion() {
+		return true;
 		/// preguntar al jugador por donde quiere ir 
 	}
 

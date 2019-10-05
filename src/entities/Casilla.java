@@ -1,71 +1,43 @@
 package entities;
 
-
 import entities.Personaje;
 
 public class Casilla {
 	private int x;
 	private int y;
 	private int tipoCasilla;
-	private Casilla casillaSig;
+
+	private boolean[] direcciones = new boolean[4];
+
 	private Casilla casillaAnt;
-	private Casilla casillaAlternativa;
-	private boolean decision; //eligio casilla alternativa (izq) false / eligio casilla siguiente (derecha) true
 
 	public Casilla(int x, int y, int tipo) {
 		this.x = x;
 		this.y = y;
 		this.tipoCasilla = tipo;
 	}
-	
-	public Casilla(int x, int y, int tipo,Casilla ant , Casilla sig , Casilla alternativa) {
-		this.x = x;
-		this.y = y;
-		this.tipoCasilla = tipo;
-		this.casillaAlternativa = alternativa;
-		this.casillaAnt = ant;
-		this.casillaSig = sig;
-	}
-	
+
 	public void aplicarEfecto(Personaje pj) {
-		switch (this.tipoCasilla) {
-		case 1:
-			// Nada
-			break;
-		case 2:
-			// SumaMonedas
-			pj.sumarMonedas(10);
-			break;
-		case 3:
-			// SumaEstrella
-			pj.obtenerEstrella();
-			break;
-		case 4:
-			// Paralizado
-			pj.paralizado();
-			break;
-		case 5:
-			// PierdeMonedas
-			pj.sumarMonedas(-10);
-		case 6:
-			// GanaItemAleatorio
-			break;				
-		}
-	}
-	
-	public Casilla decision(boolean eleccion) {
-		if(eleccion) {
-			return this.casillaSig;			
-		}
-		return this.casillaAlternativa;
+		System.out.println("Se aplico efecto.");
 	}
 
-	public Casilla getCasillaSig() {
-		return casillaSig;
+	public void decision(boolean eleccion) {
+		if (eleccion)
+			cerrarUltima();
+		else
+			cerrarPrimera();
 	}
 
-	public void setCasillaSig(Casilla casillaSig) {
-		this.casillaSig = casillaSig;
+	private void cerrarPrimera() {
+		int i = 0;
+		while (!this.direcciones[i])	i++;
+		this.direcciones[i] = false;
+	}
+
+	private void cerrarUltima() {
+		int i = this.direcciones.length - 1;
+		while (!this.direcciones[i])	i--;
+		this.direcciones[i] = false;
 	}
 
 	public Casilla getCasillaAnt() {
@@ -79,7 +51,7 @@ public class Casilla {
 	public int getX() {
 		return x;
 	}
-	
+
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -106,14 +78,5 @@ public class Casilla {
 	public void setY(int y) {
 		this.y = y;
 	}
-
-	public Casilla getCasillaAlternativa() {
-		return casillaAlternativa;
-	}
-
-	public void setCasillaAlternativa(Casilla casillaAlternativa) {
-		this.casillaAlternativa = casillaAlternativa;
-	}
-
 
 }

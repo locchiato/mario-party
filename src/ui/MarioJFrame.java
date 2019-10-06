@@ -1,15 +1,7 @@
 package ui;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JFrame;
-
 import entities.Casilla;
 
 public class MarioJFrame extends JFrame {
@@ -20,7 +12,6 @@ public class MarioJFrame extends JFrame {
 	//Despues sacar, estan temporalmente acá
 	private static Casilla[][] tablero;
 	private static int CANTIDAD_CASILLAS = 12;
-	
 
 
 	public static void main(String[] args) {
@@ -44,7 +35,7 @@ public class MarioJFrame extends JFrame {
 		//cerrar con la X la ventana
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		setTitle(Textos.TITULO);
+		setTitle(Textos.TITULO_PRINCIPAL);
 		setLocationRelativeTo(null);
 		
 		panel = new MarioJPanel(tablero, cantidadCasillas);

@@ -5,5 +5,5 @@ package ui;
  * 	O no tener que estar siguiendo el código para cambiar un texto, venís aca y lo cambias fácil
  * */
 public class Textos {
-	static public final String TITULO = "Mario Party";
+	static public final String TITULO_PRINCIPAL = "Mario Party";
 }

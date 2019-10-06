@@ -1,0 +1,18 @@
+package entities;
+
+public class CasillaSumarRestarMonedas extends Casilla {
+	private int monedas;
+
+	public CasillaSumarRestarMonedas(int x, int y, boolean[] direcciones, int monedas) {
+		super(x, y, direcciones);
+		this.monedas=monedas;
+	}
+
+	public void aplicarEfecto(Personaje pj) {
+		pj.sumarRestarMonedas(this.monedas);
+		if(pj.getMonedas()<0) {
+			pj.setMonedas(0);
+		}
+	}
+
+}

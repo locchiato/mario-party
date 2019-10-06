@@ -1,7 +1,6 @@
 package entities;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import entities.Articulo;
@@ -10,28 +9,138 @@ import entities.Casilla;
 public class Personaje {
 
 	private String nombre;
-	//private boolean turno;
 	private List<Articulo> items;
 	private int monedas;
 	private int estrellas;
-	private Casilla casillaActual;
 	private String estado;
-	private int numJug;
-	
+	private Casilla casillaActual;
+	// private int numJug;
+	// private boolean turno;
 	private int turnosParalizados;
 
 	// Se le pone un nombre al personaje (nickname)
-	// Se le pone numero de personaje (posicion)
-	public Personaje(String nom, int num) {
-		//this.turno = false;
+	public Personaje(String nom) {
+		// this.turno = false;
 		this.nombre = nom;
 		this.monedas = 0;
 		this.estrellas = 0;
 		this.estado = "Vivo";
-		this.numJug = num;
+		// this.numJug = num;
 		this.items = new ArrayList<Articulo>();
 	}
 
+//	public int getNumJug() {
+//		return numJug;
+//	}
+//
+//	public void setNumJug(int numJug) {
+//		this.numJug = numJug;
+//	}
+
+	// Funciones del personaje
+
+	public boolean puedeMoverse() {
+//		if (estado == "Vivo") {
+//			return true;
+//		} else
+//			if (estado == "Paralizado" && turnosParalizados == 0) {
+//			estado = "Vivo";
+//			return false;
+//		}
+//		turnosParalizados--;
+//		return false;
+
+		return this.estado != "Paralizado";
+	}
+
+	public void avanzar(int posiciones, Mapa mapa) {
+
+		if (puedeMoverse()) {
+			casillaActual.setPersonajePosicionado(null);
+			for (int i = 0; i < posiciones; i++) {
+				if (this.casillaActual.cantidadDirecciones() > 1) {
+					 this.casillaActual = this.casillaActual.decisionSiguiente(mapa);
+				} else
+					casillaActual = this.casillaActual.casillaSiguiente(mapa);
+			}
+			llegar();
+		}
+		// no avanza jugador paralizado
+	}
+
+	public void llegar() {
+		if (hayColision()) {
+			Personaje personajePosicionado = casillaActual.getPersonajePosicionado();
+			personajePosicionado.retroceder(1);
+		}
+		casillaActual.setPersonajePosicionado(this);
+		casillaActual.aplicarEfecto(this);
+	}
+
+	public void retroceder(int posiciones) {
+		for (int i = 0; i < posiciones; i++) {
+			casillaActual = casillaActual.getCasillaAnt();
+		}
+	}
+
+	public boolean hayColision() {
+		return casillaActual.getPersonajePosicionado() != null;
+	}
+
+	public void sumarRestarMonedas(int cantMonedas) {
+		this.monedas += cantMonedas;
+	}
+	
+	public void paralizado(int num) {
+		this.setEstado("Paralizado");
+		this.turnosParalizados+=num;
+	}
+	
+	public void curarParalisis(int num) {
+		this.turnosParalizados-= num;
+		
+		if(this.turnosParalizados <= 0) {
+			this.setEstado("Vivo");
+			this.turnosParalizados=0;
+		}
+	}
+
+	public void obtenerEstrella() {
+		this.estrellas++;
+	}
+
+	public void recogerItem(Articulo articulo) {
+		this.items.add(articulo);
+	}
+
+	public boolean esGanador(int estrellasVictoria) {
+		
+		return this.estrellas == estrellasVictoria;
+	}
+	
+//	public Personaje seleccionarPersonaje(LinkedList<Personaje> lista) {
+//	int i = 0, num;
+//	for (Personaje pj : lista) {
+//		System.out.println(i + " : " + pj.nombre);
+//		i++;
+//	}
+//	System.out.println("Elige un personaje :");
+//	// Eleccion por teclado
+//	num = 1;
+//	// Segun efecto selecciona a otro jugador o a uno mismo
+//	return lista.get(num);
+//}
+
+//public Articulo elegirItem(int itemNumber) {
+//	if (--itemNumber >= 0 && itemNumber < items.size()) {
+//		Articulo item = this.items.get(itemNumber);
+//		if (item != null)
+//			this.items.remove(itemNumber);
+//		return item;
+//	}
+//	return null;
+//}
+	
 	// Setters y Getters
 
 	public String getNombre() {
@@ -45,17 +154,13 @@ public class Personaje {
 	public int getMonedas() {
 		return monedas;
 	}
-
+	
 	public void setMonedas(int monedas) {
 		this.monedas = monedas;
 	}
 
 	public int getEstrellas() {
 		return estrellas;
-	}
-
-	public void setEstrellas(int estrellas) {
-		this.estrellas = estrellas;
 	}
 
 	public Casilla getCasillaActual() {
@@ -72,106 +177,6 @@ public class Personaje {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-
-	public int getNumJug() {
-		return numJug;
-	}
-
-	public void setNumJug(int numJug) {
-		this.numJug = numJug;
-	}
-
-	// Funciones del personaje
-
-	public boolean puedeMoverse() {
-		if (estado == "Vivo") {
-			return true;
-		} else if (estado == "Paralizado" && turnosParalizados == 0) {
-			estado = "Vivo";
-			return true;
-		}
-		turnosParalizados--;
-		return false;
-	}
-
-//	public void esTuTurno() {
-//		turno = true;
-//	}
-
-	public void avanzar(int posiciones) {
-	}
-	
-	public void llegar() {
-		casillaActual.aplicarEfecto(this);
-	}
-	
-	public boolean eleccion() {
-		return true;
-		/// preguntar al jugador por donde quiere ir 
-	}
-
-	public void Retroceder(int posiciones) {
-		for (int i = 0; i < posiciones; i++) {
-				casillaActual= casillaActual.getCasillaAnt();
-		}
-	}
-
-	public boolean colision() {
-		return false;
-	}
-
-	public Personaje seleccionarPersonaje(LinkedList<Personaje> lista) {
-		int i = 0, num;
-		for (Personaje pj : lista) {
-			System.out.println(i + " : " + pj.nombre);
-			i++;
-		}
-		System.out.println("Elige un personaje :");
-		// Eleccion por teclado
-		num = 1;
-		// Segun efecto selecciona a otro jugador o a uno mismo
-		return lista.get(num);
-	}
-
-	public Articulo elegirItem(int itemNumber) {
-		if (--itemNumber >= 0 && itemNumber < items.size()) {
-			Articulo item = this.items.get(itemNumber);
-			if (item != null)
-				this.items.remove(itemNumber);
-			return item;
-		}
-		return null;
-	}
-
-	public void sumarMonedas(int cantMonedas) {
-		this.monedas += cantMonedas;
-	}
-
-	public void quitarMonedas(int cantMonedas) {
-		this.monedas -= cantMonedas;
-	}
-
-	public void paralizado() {
-		this.setEstado("Paralizado");
-		this.turnosParalizados = 2;
-	}
-
-	public void obtenerEstrella() {
-		this.estrellas++;
-	}
-
-	public void recogerItem(Articulo articulo) {
-		this.items.add(articulo);
-	}
-
-	public boolean esGanador() {
-		if (this.estrellas == 5) {
-			return true;
-		} else if (this.casillaActual.getTipoCasilla() == 7) {
-			return true;
-		}
-		return false;
 	}
 
 }

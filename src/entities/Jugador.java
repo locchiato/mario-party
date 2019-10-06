@@ -6,9 +6,9 @@ public class Jugador {
 	private String estado;
 	private String clave;
 	
-	public Jugador(String nick, String clave) {
+	public Jugador(String nick) {
 		this.nickName = nick;
-		this.clave = clave;
+		//this.clave = clave;
 	}
 
 	public String getNickName() {

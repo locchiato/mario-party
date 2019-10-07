@@ -64,13 +64,12 @@ public class MarioJPanel extends JPanel {
 		super.paint(g);
 		Graphics2D lienzo = (Graphics2D) g;
 		lienzo.setStroke(new BasicStroke(5f));
-		lienzo.setPaint(Color.BLACK);
 
-		dibujarCasillas(lienzo);
+		dibujarCasillas(lienzo, Color.BLACK, Color.CYAN);
 
 	}
 
-	private void dibujarCasillas(Graphics2D lienzo) {
+	private void dibujarCasillas(Graphics2D lienzo, Color colorBorde, Color colorCamino) {
 		int alturaCasilla = getHeight() / cantidadCasillas;
 
 		// Aplica margen de media casilla arriba y abajo
@@ -84,12 +83,12 @@ public class MarioJPanel extends JPanel {
 
 			for (int j = 0; j < cantidadCasillas; j++) {
 				if (tablero[i][j] == null) {
-					lienzo.setPaint(Color.BLACK);
+					lienzo.setPaint(colorBorde);
 					lienzo.drawRect(posicionX, posicionY, alturaCasilla, alturaCasilla);
 				} else {
-					lienzo.setPaint(Color.BLACK);
+					lienzo.setPaint(colorBorde);
 					lienzo.drawRect(posicionX, posicionY, alturaCasilla, alturaCasilla);
-					lienzo.setPaint(Color.RED);
+					lienzo.setPaint(colorCamino);
 					lienzo.fillRect(posicionX, posicionY, alturaCasilla, alturaCasilla);
 				}
 

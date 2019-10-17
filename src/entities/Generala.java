@@ -30,7 +30,7 @@ public class Generala extends Minijuego {
 				posicionDelMaximo = i;
 			}
 		}
-		jugadores.get(posicionDelMaximo).sumarMonedas(1);
+		//jugadores.get(posicionDelMaximo).sumarMonedas(1);
 	}
 
 	public int[] getResultado() {

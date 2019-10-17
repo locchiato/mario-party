@@ -42,71 +42,10 @@ public class Casilla {
 		System.out.println("Se aplico efecto.");
 	}
 
-//	private void cerrarPrimera() {
-//		int i = 0;
-//		while (!this.direcciones[i])	i++;
-//		this.direcciones[i] = false;
-//	}
-//
-//	private void cerrarUltima() {
-//		int i = this.direcciones.length - 1;
-//		while (!this.direcciones[i])	i--;
-//		this.direcciones[i] = false;
-//	}
-
-	public Casilla getCasillaAnt() {
-		return casillaAnt;
-	}
-
-	public void setCasillaAnt(Casilla casillaAnt) {
-		this.casillaAnt = casillaAnt;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-//	public int getTipoCasilla() {
-//		return tipoCasilla;
-//	}
-
-//	public void setTipoCasilla(int tipoCasilla) {
-//		this.tipoCasilla = tipoCasilla;
-//	}
-
-	public boolean casillaPisada(Personaje pj) {
-		if (pj.getCasillaActual().getX() == this.x) {
-			return true;
+	public void desocuparCasilla(Personaje pj) {
+		if (this.personajePosicionado == pj) {
+			this.personajePosicionado = null;
 		}
-		return false;
-	}
-
-	public boolean[] getDirecciones() {
-		return direcciones;
-	}
-
-	public void setDirecciones(boolean[] direcciones) {
-		this.direcciones = direcciones;
-	}
-
-	public Personaje getPersonajePosicionado() {
-		return personajePosicionado;
-	}
-
-	public void setPersonajePosicionado(Personaje personajePosicionado) {
-		this.personajePosicionado = personajePosicionado;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
 	}
 
 	// N,S,E,O direcciones posibles
@@ -129,7 +68,7 @@ public class Casilla {
 
 		switch (direccion) {
 		case 0:
-			return mapa.obtenerCasilla(this.x -1, this.y);
+			return mapa.obtenerCasilla(this.x - 1, this.y);
 		case 1:
 			return mapa.obtenerCasilla(this.x + 1, this.y);
 		case 2:
@@ -177,8 +116,66 @@ public class Casilla {
 		return calcularCasilla(mapa, respuesta);
 	}
 
-	public int cantidadDirecciones() {
+//	private void cerrarPrimera() {
+//	int i = 0;
+//	while (!this.direcciones[i])	i++;
+//	this.direcciones[i] = false;
+//}
+//
+//private void cerrarUltima() {
+//	int i = this.direcciones.length - 1;
+//	while (!this.direcciones[i])	i--;
+//	this.direcciones[i] = false;
+//}
+
+//public boolean casillaPisada(Personaje pj) {
+//	return pj.getCasillaActual().getX() == this.x;
+//}
+
+	// getter y setter
+
+	public int getcantidadDirecciones() {
 		return this.cantidadDirecciones;
+	}
+
+	public boolean[] getDirecciones() {
+		return direcciones;
+	}
+
+	public void setDirecciones(boolean[] direcciones) {
+		this.direcciones = direcciones;
+	}
+
+	public Personaje getPersonajePosicionado() {
+		return personajePosicionado;
+	}
+
+	public void setPersonajePosicionado(Personaje personajePosicionado) {
+		this.personajePosicionado = personajePosicionado;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public Casilla getCasillaAnt() {
+		return casillaAnt;
+	}
+
+	public void setCasillaAnt(Casilla casillaAnt) {
+		this.casillaAnt = casillaAnt;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
 	}
 
 }

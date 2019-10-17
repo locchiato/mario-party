@@ -1,9 +1,11 @@
-package entities;
+package entities.test;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import entities.Dado;
 
 public class DadoTest {
 	

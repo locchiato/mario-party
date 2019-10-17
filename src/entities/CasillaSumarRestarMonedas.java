@@ -10,9 +10,6 @@ public class CasillaSumarRestarMonedas extends Casilla {
 
 	public void aplicarEfecto(Personaje pj) {
 		pj.sumarRestarMonedas(this.monedas);
-		if(pj.getMonedas()<0) {
-			pj.setMonedas(0);
-		}
 	}
 
 }

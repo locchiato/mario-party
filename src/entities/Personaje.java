@@ -24,7 +24,7 @@ public class Personaje {
 		this.nombre = nom;
 		this.monedas = 0;
 		this.estrellas = 0;
-		this.estado = "Vivo";
+		this.estado = "Normal";
 		// this.numJug = num;
 		this.items = new ArrayList<Articulo>();
 	}
@@ -39,27 +39,58 @@ public class Personaje {
 
 	// Funciones del personaje
 
-	public boolean puedeMoverse() {
-//		if (estado == "Vivo") {
-//			return true;
-//		} else
-//			if (estado == "Paralizado" && turnosParalizados == 0) {
-//			estado = "Vivo";
-//			return false;
-//		}
-//		turnosParalizados--;
-//		return false;
+	public void sumarRestarMonedas(int cantMonedas) {
+		this.monedas += cantMonedas;
+		if (this.monedas < 0) {
+			this.monedas = 0;
+		}
+	}
 
+	public void obtenerEstrella() {
+		this.estrellas++;
+	}
+
+	public boolean esGanador(int estrellasVictoria) {
+		return this.estrellas == estrellasVictoria;
+	}
+
+	public boolean hayColision() {
+		return casillaActual.getPersonajePosicionado() != null;
+	}
+
+	public void paralizado(int num) {
+		this.setEstado("Paralizado");
+		this.turnosParalizados += num;
+	}
+
+	public void curarParalisis(int num) {
+		this.turnosParalizados -= num;
+
+		if (this.turnosParalizados <= 0) {
+			this.setEstado("Normal");
+			this.turnosParalizados = 0;
+		}
+	}
+
+	public boolean puedeMoverse() {
 		return this.estado != "Paralizado";
+	}
+
+	public void retroceder(int posiciones) {
+		
+		casillaActual.desocuparCasilla(this);
+		for (int i = 0; i < posiciones; i++) {
+			casillaActual = casillaActual.getCasillaAnt();
+		}
 	}
 
 	public void avanzar(int posiciones, Mapa mapa) {
 
 		if (puedeMoverse()) {
-			casillaActual.setPersonajePosicionado(null);
+			casillaActual.desocuparCasilla(this);
 			for (int i = 0; i < posiciones; i++) {
-				if (this.casillaActual.cantidadDirecciones() > 1) {
-					 this.casillaActual = this.casillaActual.decisionSiguiente(mapa);
+				if (this.casillaActual.getcantidadDirecciones() > 1) {
+					this.casillaActual = this.casillaActual.decisionSiguiente(mapa);
 				} else
 					casillaActual = this.casillaActual.casillaSiguiente(mapa);
 			}
@@ -77,47 +108,10 @@ public class Personaje {
 		casillaActual.aplicarEfecto(this);
 	}
 
-	public void retroceder(int posiciones) {
-		for (int i = 0; i < posiciones; i++) {
-			casillaActual = casillaActual.getCasillaAnt();
-		}
-	}
+//	public void recogerItem(Articulo articulo) {
+//	this.items.add(articulo);
+//}
 
-	public boolean hayColision() {
-		return casillaActual.getPersonajePosicionado() != null;
-	}
-
-	public void sumarRestarMonedas(int cantMonedas) {
-		this.monedas += cantMonedas;
-	}
-	
-	public void paralizado(int num) {
-		this.setEstado("Paralizado");
-		this.turnosParalizados+=num;
-	}
-	
-	public void curarParalisis(int num) {
-		this.turnosParalizados-= num;
-		
-		if(this.turnosParalizados <= 0) {
-			this.setEstado("Vivo");
-			this.turnosParalizados=0;
-		}
-	}
-
-	public void obtenerEstrella() {
-		this.estrellas++;
-	}
-
-	public void recogerItem(Articulo articulo) {
-		this.items.add(articulo);
-	}
-
-	public boolean esGanador(int estrellasVictoria) {
-		
-		return this.estrellas == estrellasVictoria;
-	}
-	
 //	public Personaje seleccionarPersonaje(LinkedList<Personaje> lista) {
 //	int i = 0, num;
 //	for (Personaje pj : lista) {
@@ -140,7 +134,7 @@ public class Personaje {
 //	}
 //	return null;
 //}
-	
+
 	// Setters y Getters
 
 	public String getNombre() {
@@ -154,7 +148,7 @@ public class Personaje {
 	public int getMonedas() {
 		return monedas;
 	}
-	
+
 	public void setMonedas(int monedas) {
 		this.monedas = monedas;
 	}
@@ -177,6 +171,10 @@ public class Personaje {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	public int getTurnosParalizados() {
+		return turnosParalizados;
 	}
 
 }

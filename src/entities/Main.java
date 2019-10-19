@@ -9,7 +9,7 @@ public class Main {
 		Casilla casilla = new CasillaParalizar(0,0,dir,3);
 		casilla.mostrarDireccionesPosibles();
 		System.out.println(casilla.ingresarDireccion());
-
+		
 	}
 
 }

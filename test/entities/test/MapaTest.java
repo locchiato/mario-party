@@ -1,6 +1,5 @@
 package entities.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import entities.Casilla;
 import entities.Jugador;
 import entities.Mapa;
-import entities.Personaje;
 
 class MapaTest {
 	

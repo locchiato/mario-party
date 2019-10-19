@@ -2,10 +2,16 @@ package entities.test;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import entities.Casilla;
 import entities.CasillaSumarRestarMonedas;
+import entities.Jugador;
+import entities.Mapa;
 import entities.Personaje;
 
 public class PersonajeTest {
@@ -115,28 +121,68 @@ public class PersonajeTest {
 		assertEquals(CasillaFinal, pj.getCasillaActual());
 		System.out.println(pj.getCasillaActual().getY());
 	}
+	
+	@Test
+	public void testRetrocesoEnCadena() throws FileNotFoundException {
+		//test con mapa tablero1.txt
+		Personaje pj1 = new Personaje("Batman");
+		Personaje pj2 = new Personaje("Bromas");
+		Personaje pj3 = new Personaje("CAT");
+		
+		List<Jugador> listaJug = new ArrayList<Jugador>();
+		listaJug.add(new Jugador("Batman"));
+		listaJug.add(new Jugador("Bromas"));
+		listaJug.add(new Jugador("CAT"));
+		Mapa m = new Mapa(listaJug,5);
 
-//	@Test
-//	public void cuandoNoRecogiNingunItem_noPuedoElegirItem() {
-//		assertEquals(null, personaje.elegirItem(1));
-//		
-//	}
+		Casilla casilla1 = m.obtenerCasilla(3, 4);
+		Casilla casilla2 = m.obtenerCasilla(4, 3);
+		Casilla casilla3 = m.obtenerCasilla(4, 1);
+		
+		casilla1.setPersonajePosicionado(pj1);
+		casilla2.setPersonajePosicionado(pj2);
+		pj1.setCasillaActual(casilla1);
+		pj2.setCasillaActual(casilla2);
+		pj3.setCasillaActual(casilla1);
+		
+		pj3.llegar();
+		
+		assertEquals(pj1,casilla2.getPersonajePosicionado());
+		assertEquals(pj2,casilla3.getPersonajePosicionado());
+		assertEquals(pj3,casilla1.getPersonajePosicionado());
+		
+		assertEquals(casilla1,pj3.getCasillaActual());
+		assertEquals(casilla2,pj1.getCasillaActual());
+		assertEquals(casilla3,pj2.getCasillaActual());
+	}
+	
+	@Test
+	public void testLlegarNuevaCasilla() throws FileNotFoundException {
+		//test con mapa tablero1.txt
+		Personaje pjposicionado = new Personaje("Batman");
+		Personaje pjllega = new Personaje("Bromas");
+		
+		List<Jugador> listaJug = new ArrayList<Jugador>();
+		listaJug.add(new Jugador("Batman"));
+		listaJug.add(new Jugador("Bromas"));
+		Mapa m = new Mapa(listaJug,5);
 
-//	@Test
-//	public void cuandoRecogiAlgunItem_puedoElegirlo() {
-//		Articulo articulo = new ItemUno();
-//		
-//		personaje.recogerItem(articulo);
-//		
-//		assertEquals(articulo, personaje.elegirItem(1));
-//	}
+		Casilla casillaNueva = m.obtenerCasilla(3, 4);
+		Casilla casillaRetroceso = m.obtenerCasilla(4, 3);
+		
+		casillaNueva.setPersonajePosicionado(pjposicionado);
+		pjposicionado.setCasillaActual(casillaNueva);
+		pjllega.setCasillaActual(casillaNueva);
+		
+		pjllega.llegar();
+		
+		assertEquals(pjllega,casillaNueva.getPersonajePosicionado());
+		assertEquals(pjposicionado,casillaRetroceso.getPersonajePosicionado());
+		assertEquals(casillaRetroceso,pjposicionado.getCasillaActual());
+		assertEquals(casillaNueva,pjllega.getCasillaActual());
+		assertEquals("Paralizado",pjllega.getEstado());
 
-//	@Test
-//	public void pisarCasillaMonedas() {
-//		Casilla casilla1 = new Casilla(1,2,1);
-//		personaje.setCasillaActual(casilla1);
-//		casilla1.aplicarEfecto(personaje);
-//		assertEquals(10, personaje.getMonedas());
-//	}
+	}
+
 
 }

@@ -74,6 +74,8 @@ public class Personaje {
 		for (int i = 0; i < posiciones; i++) {
 			casillaActual = casillaActual.getCasillaAnt();
 		}
+		
+		this.llegarSinEfecto();
 	}
 
 	public void avanzar(int posiciones, Mapa mapa) {
@@ -86,7 +88,7 @@ public class Personaje {
 				} else
 					casillaActual = this.casillaActual.casillaSiguiente(mapa);
 			}
-			llegar();
+			this.llegar();
 		}
 		// no avanza jugador paralizado
 	}
@@ -94,11 +96,20 @@ public class Personaje {
 	public void llegar() {
 		if (hayColision()) {
 			Personaje personajePosicionado = casillaActual.getPersonajePosicionado();
-			personajePosicionado.retroceder(1);
+			personajePosicionado.retroceder(2);
 		}
 		casillaActual.setPersonajePosicionado(this);
 		casillaActual.aplicarEfecto(this);
 	}
+	
+	public void llegarSinEfecto() {
+		if (hayColision()) {
+			Personaje personajePosicionado = casillaActual.getPersonajePosicionado();
+			personajePosicionado.retroceder(2);
+		}
+		casillaActual.setPersonajePosicionado(this);
+	}
+
 
 //	public void recogerItem(Articulo articulo) {
 //	this.items.add(articulo);

@@ -2,12 +2,18 @@ package entities.test;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import entities.Casilla;
 import entities.CasillaGanarEstrella;
 import entities.CasillaParalizar;
 import entities.CasillaSumarRestarMonedas;
+import entities.Jugador;
+import entities.Mapa;
 import entities.Personaje;
 
 
@@ -99,6 +105,44 @@ public class CasillaTest {
 		assertEquals(pj,casilla.getPersonajePosicionado());
 		casilla.desocuparCasilla(pj);
 		assertEquals(null,casilla.getPersonajePosicionado());
+	}
+	
+	
+	@Test
+	public void testCalcularCasillaSiguiente() throws FileNotFoundException {
+		//prueba con el tablero1.txt
+		List<Jugador> listaJug = new ArrayList<Jugador>();
+		listaJug.add(new Jugador("Batman"));
+		listaJug.add(new Jugador("Robin"));
+		listaJug.add(new Jugador("Superma"));
+		listaJug.add(new Jugador("Mujer Maravilla"));
+		
+		Mapa m = new Mapa(listaJug,5);
+		
+		//abajo
+		 Casilla casillaActual = m.obtenerCasilla(0, 0);
+		 Casilla casillaSig = m.obtenerCasilla(1, 0);
+		 assertEquals(casillaSig,casillaActual.casillaSiguiente(m));
+		 
+		 //derecha
+		 casillaActual = m.obtenerCasilla(0, 1);
+		 casillaSig = m.obtenerCasilla(0, 0);
+		 assertEquals(casillaSig,casillaActual.casillaSiguiente(m));
+		 
+		 //izquierda
+		 casillaActual = m.obtenerCasilla(4, 0);
+		 casillaSig = m.obtenerCasilla(4, 1);
+		 assertEquals(casillaSig,casillaActual.casillaSiguiente(m));
+		 
+		 //arriba
+		 //casillaActual = m.obtenerCasilla(3, 2);
+		 casillaActual = m.obtenerCasilla(4, 4);
+		 casillaSig = m.obtenerCasilla(3, 4);
+		 assertEquals(casillaSig,casillaActual.casillaSiguiente(m));
+		 
+		 //caso en el que no puede calcular siguiente con este metodo porque tiene mas de una direccion
+		 casillaActual = m.obtenerCasilla(4, 2);
+		 assertEquals(null,casillaActual.casillaSiguiente(m));
 	}
 	
 	

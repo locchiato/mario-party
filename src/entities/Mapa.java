@@ -86,6 +86,7 @@ public class Mapa {
 		for (int j = 0; j < cantidad; j++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
+			dir = new boolean[4];
 			for (int i = 0; i < dir.length; i++) {
 				dir[i] = (sc.nextInt() == 1 ? true : false);
 			}
@@ -98,6 +99,7 @@ public class Mapa {
 		for (int j = 0; j < cantidad; j++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
+			dir = new boolean[4];
 			for (int i = 0; i < dir.length; i++) {
 				dir[i] = (sc.nextInt() == 1 ? true : false);
 			}
@@ -110,6 +112,7 @@ public class Mapa {
 		for (int j = 0; j < cantidad; j++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
+			dir = new boolean[4];
 			for (int i = 0; i < dir.length; i++) {
 				dir[i] = (sc.nextInt() == 1 ? true : false);
 			}
@@ -122,6 +125,7 @@ public class Mapa {
 		for (int j = 0; j < cantidad; j++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
+			dir = new boolean[4];
 			for (int i = 0; i < dir.length; i++) {
 				dir[i] = (sc.nextInt() == 1 ? true : false);
 			}
@@ -134,6 +138,7 @@ public class Mapa {
 		for (int j = 0; j < cantidad; j++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
+			dir = new boolean[4];
 			for (int i = 0; i < dir.length; i++) {
 				dir[i] = (sc.nextInt() == 1 ? true : false);
 			}

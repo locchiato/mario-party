@@ -22,6 +22,7 @@ public class DadoTest {
 		for (int i = 0; i < 300; i++) {
 			int valor=dado.tirarDado();
 			assertTrue(valor<=dado.getValorMax() && valor>=dado.getValorMin());
+			System.out.println(valor);
 		}
 		
 	}

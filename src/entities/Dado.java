@@ -19,8 +19,7 @@ public class Dado {
 	}
 	
 	public int tirarDado() {
-		return this.valorMin + (int) Math.random() % (this.valorMax - this.valorMin +1);
+		return this.valorMin + (int) (Math.random() * (this.valorMax - this.valorMin +1));
 	}
 
 }
-

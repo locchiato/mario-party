@@ -39,9 +39,9 @@ public class Mapa {
 			jugadores.add(p);
 		}
 		
-		//comentar estas dos para poder testear los metodos de forma individual
 		ordenTurnos();
-		inicioJuego();
+		//comentar esta para poder testear los metodos de forma individual
+		//inicioJuego();
 	}
 	
 	public void ordenTurnos() {
@@ -65,7 +65,7 @@ public class Mapa {
 	// Cargar casillas con efectos aleatorios
 
 	public void rellenarCasillas() throws FileNotFoundException {
-		String Path = "C:\\Users\\Mau\\Desktop\\Programacion Avanzada\\Mario Party\\mario-party\\recursos\\Tableros\\";
+		String Path = "recursos\\Tableros\\";
 		//String Path = "..\\..\\..\\recursos\\Tableros\\";
 		Scanner sc = new Scanner(new File(Path + "tablero1.txt"));
 		

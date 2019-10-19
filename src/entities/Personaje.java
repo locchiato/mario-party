@@ -7,7 +7,7 @@ import java.util.Scanner;
 import entities.Articulo;
 import entities.Casilla;
 
-public class Personaje {
+public class Personaje implements Comparable<Personaje> {
 
 	private String nombre;
 	private List<Articulo> items;
@@ -30,6 +30,21 @@ public class Personaje {
 	}
 
 	// Funciones del personaje
+	
+	@Override
+	public int compareTo(Personaje otro) {
+		if(this.estrellas > otro.estrellas) {
+			return -1;
+		}
+		if(this.estrellas == otro.estrellas && this.monedas > otro.monedas) {
+				return -1;
+		}
+		
+		if(this.estrellas == otro.estrellas && this.monedas == otro.monedas) {
+			return 0;
+		}
+		return 1;
+	}
 
 	public void sumarRestarMonedas(int cantMonedas) {
 		this.monedas += cantMonedas;
@@ -90,16 +105,19 @@ public class Personaje {
 			}
 			this.llegar();
 		}
+		System.out.println(this.nombre +" no puede avanzar esta PARALIZADO");
 		// no avanza jugador paralizado
 	}
 
 	public void llegar() {
 		if (hayColision()) {
 			Personaje personajePosicionado = casillaActual.getPersonajePosicionado();
+			System.out.println(personajePosicionado.nombre +" fue PISADO retrocede 2 casillas");
 			personajePosicionado.retroceder(2);
 		}
 		casillaActual.setPersonajePosicionado(this);
 		casillaActual.aplicarEfecto(this);
+		System.out.println("efecto de la casilla");
 	}
 	
 	public void llegarSinEfecto() {
@@ -207,4 +225,6 @@ public class Personaje {
 	public void setCasillasExtras(int cas) {
 		this.casillasExtras = cas;
 	}
+
+
 }

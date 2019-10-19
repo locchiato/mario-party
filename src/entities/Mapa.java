@@ -2,6 +2,7 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,26 +25,27 @@ public class Mapa {
 	private List<Personaje> jugadores = new LinkedList<Personaje>();
 	private List<Minijuego> minijuegos = new ArrayList<Minijuego>();
 	private int cantidadRondas;
+	private int estrellasVictoria = 10;
 	private Casilla casillaInicio;
-	
+
 	// Constructor , aca comienza la partida
-	public Mapa(List<Jugador> listaJug,int cantidadRondas) throws FileNotFoundException {
+	public Mapa(List<Jugador> listaJug, int cantidadRondas) throws FileNotFoundException {
 		this.cantidadRondas = cantidadRondas;
 		this.dado = new Dado(1, 6);
-		
+
 		rellenarCasillas();
-		
+
 		for (Jugador jug : listaJug) {
 			Personaje p = new Personaje(jug.getNickName());
 			p.setCasillaActual(casillaInicio);
 			jugadores.add(p);
 		}
-		
+
 		ordenTurnos();
-		//comentar esta para poder testear los metodos de forma individual
-		//inicioJuego();
+		// comentar esta para poder testear los metodos de forma individual
+		 inicioJuego();
 	}
-	
+
 	public void ordenTurnos() {
 		Map<Integer, Personaje> turnos = new TreeMap<Integer, Personaje>(Collections.reverseOrder());
 		List<Personaje> jugOrd = new LinkedList<Personaje>();
@@ -59,6 +61,15 @@ public class Mapa {
 		for (Entry<Integer, Personaje> pj : turnos.entrySet()) {
 			jugOrd.add(pj.getValue());
 		}
+		
+		//imprimir orden
+		
+		for (Personaje personaje : jugOrd) {
+			System.out.println(personaje.getNombre() + " Estrellas: " + personaje.getEstrellas() + " Monedas: "
+					+ personaje.getMonedas()+" Estado: " + personaje.getEstado());
+		}
+		
+		
 		this.jugadores = jugOrd;
 	}
 
@@ -66,9 +77,9 @@ public class Mapa {
 
 	public void rellenarCasillas() throws FileNotFoundException {
 		String Path = "recursos\\Tableros\\";
-		//String Path = "..\\..\\..\\recursos\\Tableros\\";
-		Scanner sc = new Scanner(new File(Path + "tablero1.txt"));
-		
+		// String Path = "..\\..\\..\\recursos\\Tableros\\";
+		Scanner sc = new Scanner(new File(Path + "tablero2.txt"));
+
 		this.tablero = new Casilla[sc.nextInt()][sc.nextInt()];
 
 		// casilla inicio
@@ -163,57 +174,92 @@ public class Mapa {
 
 	public void inicioJuego() {
 		// Aca se van a jugar las rondas hasta ver quien gana
-		
-		
-		// rondas del juego 
+
+		// rondas del juego
 		for (int i = 0; i < cantidadRondas; i++) {
-			
+
 			for (Personaje personaje : jugadores) {
+				System.out.println();
+				System.out.println("TURNO JUGADOR: "+ personaje.getNombre());
+				System.out.println();
 				this.iniciaTurno(personaje);
 			}
-			//turno de cada jugador por ronda
-			
-			finRonda();
+			// turno de cada jugador por ronda
+			this.finRonda();
+			if (this.hayGanador()) {
+				break;
+			}
 		}
-		
-		//fin del juego
+
+		// fin del juego
+		this.definirPosiciones();
 	}
-	
+
+	public void definirPosiciones() {
+		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println("------------ Posiciones---------");
+		System.out.println();
+		System.out.println();
+		
+		Collections.sort(jugadores);
+
+		for (Personaje personaje : jugadores) {
+			System.out.println(personaje.getNombre() + " Estrellas: " + personaje.getEstrellas() + " Monedas: "
+					+ personaje.getMonedas()+" Estado: " + personaje.getEstado());
+		}
+
+	}
+
+	public boolean hayGanador() {
+
+		for (Personaje personaje : jugadores) {
+			if (personaje.esGanador(estrellasVictoria)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void iniciaTurno(Personaje personaje) {
-		//usa item?
-		Scanner entrada = new Scanner(System.in);
-		System.out.print("Prefiere usar un item en este turno? : 1 - SI , Otro - NO");
-		int respuesta = entrada.nextInt();
-		if(respuesta == 1) {
-			System.out.println("Eligio usar un item");
-			int item = personaje.elegirItem();
-			personaje.usarItem(item,this.jugadores);
-		}
-		else {
-			System.out.println("No usara un item en este turno");
-		}
-		entrada.close();
-		//tira el dado
+		// usa item?
+//		Scanner entrada = new Scanner(System.in);
+//		System.out.print("Prefiere usar un item en este turno? : 1 - SI , Otro - NO");
+//		int respuesta = entrada.nextInt();
+//		if (respuesta == 1) {
+//			System.out.println("Eligio usar un item");
+//			int item = personaje.elegirItem();
+//			personaje.usarItem(item, this.jugadores);
+//		} else {
+//			System.out.println("No usara un item en este turno");
+//		}
+//		entrada.close();
+		// tira el dado
 		System.out.println("El jugador " + personaje.getNombre() + " tira el dado");
 		int valorDado = this.dado.tirarDado();
 		System.out.println("El jugador " + personaje.getNombre() + " ha sacado " + valorDado);
-		//avanza
+		// avanza
 		personaje.avanzar(valorDado, this);
-		//efecto de la casilla
-		personaje.getCasillaActual().aplicarEfecto(personaje);
 	}
 
 	public void finRonda() {
-			// Aca se jugara el minijuego entre los personajes , las recompensas y perdidas
-			// se veran
-			// segun el minijuego jugado
-		
+		// Aca se jugara el minijuego entre los personajes , las recompensas y perdidas
+		// se veran
+		// segun el minijuego jugado
+
 	}
 
-	// Getter y Setter (ver cuales no hacen falta y  borrarlos)
+	// Getter y Setter (ver cuales no hacen falta y borrarlos)
 
 	public Casilla obtenerCasilla(int x, int y) {
-		return  this.tablero[x][y];
+		return this.tablero[x][y];
 	}
 
 	public Dado getDado() {
@@ -263,7 +309,5 @@ public class Mapa {
 	public void setCasillaInicio(Casilla casillaInicio) {
 		this.casillaInicio = casillaInicio;
 	}
-	
-	
 
 }

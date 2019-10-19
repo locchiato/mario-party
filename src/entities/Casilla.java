@@ -49,6 +49,7 @@ public class Casilla {
 	public Casilla decisionSiguiente(Mapa mapa) {
 		mostrarDireccionesPosibles();
 		int respuesta = ingresarDireccion();
+		System.out.println("respuesta: " + respuesta);
 
 		return calcularCasilla(mapa, respuesta);
 	}
@@ -93,16 +94,20 @@ public class Casilla {
 	}
 
 	public int ingresarDireccion() {
-		Scanner entrada = new Scanner(System.in);
+//		Scanner entrada = new Scanner(System.in);
 		System.out.print("Ingresar el numero de la direccion: ");
-		int respuesta = entrada.nextInt();
-		while (respuesta < 0 || respuesta > 4 || direcciones[respuesta] != true) {
-			System.out.println();
-			System.out.println("Direccion incorreta");
-			System.out.print("Ingrese un numero nuevamente: ");
-			respuesta = entrada.nextInt();
-		}
-		entrada.close();
+		//prueba
+		int respuesta = 0;
+
+		
+//		int respuesta = entrada.nextInt();
+//		while (respuesta < 0 || respuesta > 3 || direcciones[respuesta] != true) {
+//			System.out.println();
+//			System.out.println("Direccion incorreta");
+//			System.out.print("Ingrese un numero nuevamente: ");
+//			respuesta = entrada.nextInt();
+//		}
+//		entrada.close();
 		return respuesta;
 	}
 

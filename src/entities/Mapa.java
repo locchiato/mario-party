@@ -195,9 +195,21 @@ public class Mapa {
 	}
 
 	public void finRonda() {
-			// Aca se jugara el minijuego entre los personajes , las recompensas y perdidas
-			// se veran
-			// segun el minijuego jugado
+		int i=0;
+		int opcion;
+			for(Minijuego mj:minijuegos) {
+				System.out.println(i+"-"+mj.getClass().getName());			
+			}
+			
+		do {
+			System.out.println("Elija un minijuego");
+			Scanner sc=new Scanner(System.in);
+			opcion=sc.nextInt();
+		}while(opcion<0 && opcion>minijuegos.size()-1);
+		
+		minijuegos.get(opcion).jugar(this.jugadores);
+			
+			
 		
 	}
 	

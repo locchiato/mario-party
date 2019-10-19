@@ -7,16 +7,20 @@ public class Generala extends Minijuego {
 	private int cantidadDeJugadores;
 	private int resultado[];
 	private List<Personaje> jugadores;
+	private int maximo;
 
-	public Generala(List<Personaje> jugadores) {
-		this.cantidadDeJugadores = jugadores.size();
-		;
-		this.resultado = new int[this.cantidadDeJugadores];
-		this.jugadores = jugadores;
+	public Generala() {
+		
 	}
 
-	public void jugar() {
-		int suma, maximo, posicionDelMaximo = 0;
+	public void jugar(List<Personaje> jugadores) {
+this.cantidadDeJugadores = jugadores.size();
+		
+		this.resultado = new int[this.cantidadDeJugadores];
+		this.jugadores = jugadores;
+		
+		
+		int suma, maximo=0;
 		Dado dado = new Dado(1, 6);
 		for (int i = 0; i < this.cantidadDeJugadores; i++) {
 			suma = 0;
@@ -27,14 +31,52 @@ public class Generala extends Minijuego {
 			maximo = suma;
 			if (maximo < suma) {
 				maximo = suma;
-				posicionDelMaximo = i;
+			//	posicionDelMaximo = i;
 			}
 		}
-		//jugadores.get(posicionDelMaximo).sumarMonedas(1);
+		this.maximo=maximo;
+		anunciar(maximo);
+		darPuntos(maximo);
 	}
 
 	public int[] getResultado() {
 		return resultado;
 	}
+	
+	
 
+	public void darPuntos(int max){
+		int i=0;
+		for(Personaje j:jugadores) {
+			if(resultado[i]!=max)
+				j.sumarRestarMonedas(3);
+			else
+				j.sumarRestarMonedas(20);
+		}		
+	}
+	
+	
+	public void anunciar(int max){
+		
+		int i=0;
+		for(Personaje j:jugadores) {
+			if(resultado[i]==max)
+				System.out.println(j.getNombre()+"Gano");
+		}		
+			
+	}
+	
+
+	public Personaje darGanador() {
+		Personaje ganador=null;
+		int i=0;
+		for(Personaje j:jugadores) {
+			if(resultado[i]==maximo)
+				ganador=j;
+		}
+		
+		return ganador;
+	}
+	
+	
 }

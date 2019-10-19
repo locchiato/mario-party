@@ -2,6 +2,7 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import entities.Articulo;
 import entities.Casilla;
@@ -14,8 +15,7 @@ public class Personaje {
 	private int estrellas;
 	private String estado;
 	private Casilla casillaActual;
-	// private int numJug;
-	// private boolean turno;
+	private int casillasExtras;
 	private int turnosParalizados;
 
 	// Se le pone un nombre al personaje (nickname)
@@ -109,42 +109,53 @@ public class Personaje {
 		}
 		casillaActual.setPersonajePosicionado(this);
 	}
-
-
-//	public void recogerItem(Articulo articulo) {
-//	this.items.add(articulo);
-//}
-
-//	public Personaje seleccionarPersonaje(LinkedList<Personaje> lista) {
-//	int i = 0, num;
-//	for (Personaje pj : lista) {
-//		System.out.println(i + " : " + pj.nombre);
-//		i++;
-//	}
-//	System.out.println("Elige un personaje :");
-//	// Eleccion por teclado
-//	num = 1;
-//	// Segun efecto selecciona a otro jugador o a uno mismo
-//	return lista.get(num);
-//}
-
-//public Articulo elegirItem(int itemNumber) {
-//	if (--itemNumber >= 0 && itemNumber < items.size()) {
-//		Articulo item = this.items.get(itemNumber);
-//		if (item != null)
-//			this.items.remove(itemNumber);
-//		return item;
-//	}
-//	return null;
-//}
 	
-//	public int getNumJug() {
-//	return numJug;
-//}
-//
-//public void setNumJug(int numJug) {
-//	this.numJug = numJug;
-//}
+	
+	//falta testear
+	public void recogerItem(Articulo articulo) {
+		this.items.add(articulo);
+	}
+
+	public Personaje seleccionarPersonaje(List<Personaje> jugadores) {
+		int i = 0, num;
+		for (Personaje pj : jugadores) {
+			System.out.println(i + " : " + pj.nombre);
+			i++;
+		}
+		System.out.println("Elige un personaje :");
+		// Eleccion por teclado , nunca a uno mismo
+		num = 1;
+		return jugadores.get(num);
+	}
+
+	public int elegirItem() {
+		int indice = 1;
+		Scanner entradaEscaner;
+		int itemSel;
+		if (this.items.size() != 0) {
+			for (Articulo art : this.items) {
+				System.out.println("Elija un item:");
+				System.out.println(indice + "-" + art.getClass().getName());
+
+			}
+			entradaEscaner = new Scanner(System.in);
+			itemSel = entradaEscaner.nextInt();
+			entradaEscaner.close();
+			return itemSel - 1;
+		}
+		return -1;
+	}
+
+	public void usarItem(int itemNumber, List<Personaje> jugadores) {
+		Personaje eleccion;
+		if (this.items.get(itemNumber).getEfecto() == 1) {
+			eleccion = this.seleccionarPersonaje(jugadores);
+			this.items.get(itemNumber).usarArticulo(eleccion, jugadores);
+		} else {
+			this.items.get(itemNumber).usarArticulo(this, jugadores);
+		}
+		this.items.remove(itemNumber);
+	}
 
 
 	// Setters y Getters
@@ -189,4 +200,11 @@ public class Personaje {
 		return turnosParalizados;
 	}
 
+	public int getCasillasExtras() {
+		return this.casillasExtras;
+	}
+	
+	public void setCasillasExtras(int cas) {
+		this.casillasExtras = cas;
+	}
 }

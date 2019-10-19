@@ -160,17 +160,6 @@ public class Mapa {
 		sc.close();
 
 	}
-	
-	
-
-	// Aca se ve el orden de cada uno
-//	public void ordenTurnos() {
-//		
-//		List<Integer> turnos = tirarDados();
-//		for (Personaje pj : this.jugadores) {
-//			turnos.add(pj.getNumJug());
-//		}
-//	}
 
 	public void inicioJuego() {
 		// Aca se van a jugar las rondas hasta ver quien gana
@@ -192,11 +181,26 @@ public class Mapa {
 	
 	private void iniciaTurno(Personaje personaje) {
 		//usa item?
+		Scanner entrada = new Scanner(System.in);
+		System.out.print("Prefiere usar un item en este turno? : 1 - SI , Otro - NO");
+		int respuesta = entrada.nextInt();
+		if(respuesta == 1) {
+			System.out.println("Eligio usar un item");
+			int item = personaje.elegirItem();
+			personaje.usarItem(item,this.jugadores);
+		}
+		else {
+			System.out.println("No usara un item en este turno");
+		}
+		entrada.close();
 		//tira el dado
-		//avanza
-		//efecto de la casilla
+		System.out.println("El jugador " + personaje.getNombre() + " tira el dado");
 		int valorDado = this.dado.tirarDado();
+		System.out.println("El jugador " + personaje.getNombre() + " ha sacado " + valorDado);
+		//avanza
 		personaje.avanzar(valorDado, this);
+		//efecto de la casilla
+		personaje.getCasillaActual().aplicarEfecto(personaje);
 	}
 
 	public void finRonda() {
@@ -205,17 +209,8 @@ public class Mapa {
 			// segun el minijuego jugado
 		
 	}
-	
-	private List<Integer> tirarDados() {
-		List<Integer> dados = new ArrayList<>(); 
-		for(Personaje personaje : this.jugadores) {
-			dados.add(this.dado.tirarDado());
-		}
-			
-		return dados;
-	}
 
-	// Getter y Setter (ver cuales no hacen falta y hay que borrarlos)
+	// Getter y Setter (ver cuales no hacen falta y  borrarlos)
 
 	public Casilla obtenerCasilla(int x, int y) {
 		return  this.tablero[x][y];

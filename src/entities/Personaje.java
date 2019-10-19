@@ -29,14 +29,6 @@ public class Personaje {
 		this.items = new ArrayList<Articulo>();
 	}
 
-//	public int getNumJug() {
-//		return numJug;
-//	}
-//
-//	public void setNumJug(int numJug) {
-//		this.numJug = numJug;
-//	}
-
 	// Funciones del personaje
 
 	public void sumarRestarMonedas(int cantMonedas) {
@@ -134,6 +126,15 @@ public class Personaje {
 //	}
 //	return null;
 //}
+	
+//	public int getNumJug() {
+//	return numJug;
+//}
+//
+//public void setNumJug(int numJug) {
+//	this.numJug = numJug;
+//}
+
 
 	// Setters y Getters
 

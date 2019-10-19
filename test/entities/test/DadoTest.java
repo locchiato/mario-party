@@ -19,7 +19,7 @@ public class DadoTest {
 	@Test
 	public void tirarDadoTest(){
 		
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 300; i++) {
 			int valor=dado.tirarDado();
 			assertTrue(valor<=dado.getValorMax() && valor>=dado.getValorMin());
 		}
@@ -32,7 +32,7 @@ public class DadoTest {
 		int valorMax=15;
 		
 		dado = new Dado(valorMin, valorMax);
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 300; i++) {
 			int valor=dado.tirarDado();
 			assertTrue(valor<=valorMax && valor>=valorMin);
 		}

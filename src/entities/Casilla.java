@@ -1,7 +1,5 @@
 package entities;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 import entities.Personaje;
@@ -9,18 +7,21 @@ import entities.Personaje;
 public class Casilla {
 	private int x;
 	private int y;
-	private boolean[] direcciones = new boolean[4]; // N,S,E,O
+	private boolean[] direcciones; // N,S,E,O
 	private Casilla casillaAnt;
 	private Personaje personajePosicionado;
 	private int cantidadDirecciones = 0;
-	private Map<Integer, String> nombreDireccion = new HashMap<Integer, String>();
+	final static private String[] nombreDireccion = { "Arriba", "Abajo", "Derecha", "Izquierda" };
 
 	public Casilla(int x, int y, boolean[] direcciones) {
 		this.x = x;
 		this.y = y;
 		this.direcciones = direcciones;
 		calcularTotalDirecciones();
-		cargarDirecciones();
+	}
+
+	public void aplicarEfecto(Personaje pj) {
+		System.out.println("Se aplico efecto.");
 	}
 
 	private void calcularTotalDirecciones() {
@@ -28,23 +29,6 @@ public class Casilla {
 			if (direcciones[i]) {
 				cantidadDirecciones++;
 			}
-		}
-	}
-
-	private void cargarDirecciones() {
-		nombreDireccion.put(1, "Arriba");
-		nombreDireccion.put(2, "Abajo");
-		nombreDireccion.put(3, "Derecha");
-		nombreDireccion.put(4, "Izquierda");
-	}
-
-	public void aplicarEfecto(Personaje pj) {
-		System.out.println("Se aplico efecto.");
-	}
-
-	public void desocuparCasilla(Personaje pj) {
-		if (this.personajePosicionado == pj) {
-			this.personajePosicionado = null;
 		}
 	}
 
@@ -58,12 +42,19 @@ public class Casilla {
 				i++;
 			}
 			return calcularCasilla(mapa, i);
-
 		}
 		return null;
 	}
 
-	// 0 = norte - 1 = sur - 2 = este - 3 = oeste
+	public Casilla decisionSiguiente(Mapa mapa) {
+		mostrarDireccionesPosibles();
+		int respuesta = ingresarDireccion();
+
+		return calcularCasilla(mapa, respuesta);
+	}
+
+	// 0 = norte(arriba) - 1 = sur (abajo) - 2 = este(derecha) - 3 =
+	// oeste(izquierda)
 	private Casilla calcularCasilla(Mapa mapa, int direccion) {
 
 		switch (direccion) {
@@ -84,22 +75,28 @@ public class Casilla {
 	// si la eleccion es false: la direccion que toma es la segunda habilitada
 	// (recorriendo el vector desde el principio)
 
-	private void mostrarDireccionesPosibles() {
+	public void mostrarDireccionesPosibles() {
 
 		System.out.println("Direcciones posibles: ");
 
 		for (int i = 0; i < direcciones.length; i++) {
 			if (direcciones[i]) {
-				System.out.println(i + " : " + nombreDireccion.get(i));
+				System.out.println(i + " : " + nombreDireccion[i]);
 			}
 		}
 	}
 
-	private int ingresarDireccion() {
+	public void desocuparCasilla(Personaje pj) {
+		if (this.personajePosicionado == pj) {
+			this.personajePosicionado = null;
+		}
+	}
+
+	public int ingresarDireccion() {
 		Scanner entrada = new Scanner(System.in);
 		System.out.print("Ingresar el numero de la direccion: ");
 		int respuesta = entrada.nextInt();
-		while (respuesta <= 0 && respuesta > 4 && direcciones[respuesta] != true) {
+		while (respuesta < 0 || respuesta > 4 || direcciones[respuesta] != true) {
 			System.out.println();
 			System.out.println("Direccion incorreta");
 			System.out.print("Ingrese un numero nuevamente: ");
@@ -107,13 +104,6 @@ public class Casilla {
 		}
 		entrada.close();
 		return respuesta;
-	}
-
-	public Casilla decisionSiguiente(Mapa mapa) {
-		mostrarDireccionesPosibles();
-		int respuesta = ingresarDireccion();
-
-		return calcularCasilla(mapa, respuesta);
 	}
 
 //	private void cerrarPrimera() {

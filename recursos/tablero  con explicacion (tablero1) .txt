@@ -1,3 +1,6 @@
+DIMENCION DEL TABLERO
+5 5
+
 Casilla INICIO ( por cada casilla (x , y , direcciones(son 4))
 201000
 Casillas Desicion (primera linea cantidad, por cada casilla (x , y , direcciones(son 4))

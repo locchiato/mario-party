@@ -124,12 +124,12 @@ public class CasillaTest {
 		 Casilla casillaSig = m.obtenerCasilla(1, 0);
 		 assertEquals(casillaSig,casillaActual.casillaSiguiente(m));
 		 
-		 //derecha
+		 //izquierda
 		 casillaActual = m.obtenerCasilla(0, 1);
 		 casillaSig = m.obtenerCasilla(0, 0);
 		 assertEquals(casillaSig,casillaActual.casillaSiguiente(m));
 		 
-		 //izquierda
+		 //derecha
 		 casillaActual = m.obtenerCasilla(4, 0);
 		 casillaSig = m.obtenerCasilla(4, 1);
 		 assertEquals(casillaSig,casillaActual.casillaSiguiente(m));

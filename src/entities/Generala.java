@@ -6,13 +6,11 @@ public class Generala extends Minijuego {
 
 	private int cantidadDeJugadores;
 	private int resultado[];
-	private List<Personaje> jugadores;
 
 	public Generala(List<Personaje> jugadores) {
-		this.cantidadDeJugadores = jugadores.size();
-		;
-		this.resultado = new int[this.cantidadDeJugadores];
 		this.jugadores = jugadores;
+		this.cantidadDeJugadores = jugadores.size();
+		this.resultado = new int[this.cantidadDeJugadores];
 	}
 
 	public void jugar() {

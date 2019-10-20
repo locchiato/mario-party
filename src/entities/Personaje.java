@@ -58,7 +58,7 @@ public class Personaje implements Comparable<Personaje> {
 	}
 
 	public boolean esGanador(int estrellasVictoria) {
-		return this.estrellas == estrellasVictoria;
+		return this.estrellas >= estrellasVictoria;
 	}
 
 	public boolean hayColision() {
@@ -105,8 +105,11 @@ public class Personaje implements Comparable<Personaje> {
 			}
 			this.llegar();
 		}
-		System.out.println(this.nombre +" no puede avanzar esta PARALIZADO");
-		// no avanza jugador paralizado
+		else {
+			// no avanza jugador paralizado
+			System.out.println(this.nombre +" no puede avanzar esta PARALIZADO");
+			this.curarParalisis(1);
+		}
 	}
 
 	public void llegar() {

@@ -43,7 +43,7 @@ public class Mapa {
 
 		ordenTurnos();
 		// comentar esta para poder testear los metodos de forma individual
-		 inicioJuego();
+		inicioJuego();
 	}
 
 	public void ordenTurnos() {
@@ -76,7 +76,10 @@ public class Mapa {
 	// Cargar casillas con efectos aleatorios
 
 	public void rellenarCasillas() throws FileNotFoundException {
-		String Path = "recursos\\Tableros\\";
+		//WINDOWS
+		//String Path = "recursos\\Tableros\\";
+		//MAC
+		String Path = "recursos/Tableros/";
 		// String Path = "..\\..\\..\\recursos\\Tableros\\";
 		Scanner sc = new Scanner(new File(Path + "tablero2.txt"));
 

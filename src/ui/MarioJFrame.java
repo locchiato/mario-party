@@ -14,7 +14,7 @@ public class MarioJFrame extends JFrame {
 	private static int CANTIDAD_CASILLAS = 12;
 
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -26,7 +26,7 @@ public class MarioJFrame extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	public MarioJFrame(Casilla[][] tablero, int cantidadCasillas) {
 		//Full Screen
@@ -40,6 +40,13 @@ public class MarioJFrame extends JFrame {
 		
 		panel = new MarioJPanel(tablero, cantidadCasillas);
 		setContentPane(panel);
+		
+		setVisible(true);
+	}
+	
+	public void redibujar(Casilla[][] tablero){
+		panel.redibujar(tablero);
+		repaint();
 	}
 
 }

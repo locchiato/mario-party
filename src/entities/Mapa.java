@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -17,6 +18,7 @@ import entities.Dado;
 import entities.Jugador;
 import entities.Minijuego;
 import entities.Personaje;
+import ui.MarioJFrame;
 
 public class Mapa {
 
@@ -27,6 +29,7 @@ public class Mapa {
 	private int cantidadRondas;
 	private int estrellasVictoria = 10;
 	private Casilla casillaInicio;
+	private MarioJFrame jFrame;
 
 	// Constructor , aca comienza la partida
 	public Mapa(List<Jugador> listaJug, int cantidadRondas) throws FileNotFoundException {
@@ -176,8 +179,11 @@ public class Mapa {
 	}
 
 	public void inicioJuego() {
+		//Se dibuja la ventana
+		
+		jFrame = new MarioJFrame(tablero, tablero.length);
+		
 		// Aca se van a jugar las rondas hasta ver quien gana
-
 		// rondas del juego
 		for (int i = 0; i < cantidadRondas; i++) {
 
@@ -196,6 +202,11 @@ public class Mapa {
 
 		// fin del juego
 		this.definirPosiciones();
+	}
+	
+	public void redibujar() {
+		jFrame.redibujar(tablero);
+		new EsperarParaRedibujarThread().run();
 	}
 
 	public void definirPosiciones() {
@@ -248,6 +259,8 @@ public class Mapa {
 		System.out.println("El jugador " + personaje.getNombre() + " tira el dado");
 		int valorDado = this.dado.tirarDado();
 		System.out.println("El jugador " + personaje.getNombre() + " ha sacado " + valorDado);
+		//Mostrar Dado
+		
 		// avanza
 		personaje.avanzar(valorDado, this);
 	}

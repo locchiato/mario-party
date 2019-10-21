@@ -26,8 +26,8 @@ public class MarioJPanel extends JPanel {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new BorderLayout(0, 0));
 		this.cantidadCasillas = cantidadCasillas;
-		// this.tablero = tablero;
-		llenarTableroParaProbar();
+		this.tablero = tablero;
+		//llenarTableroParaProbar();
 	
 	}
 
@@ -110,6 +110,11 @@ public class MarioJPanel extends JPanel {
 
 			posicionY += alturaCasilla;
 		}
+	}
+	
+	public void redibujar(Casilla[][] tablero){
+		this.tablero = tablero;
+		repaint();
 	}
 
 	private void dibujarPersonaje(Graphics2D lienzo, int posicionX, int posicionY, int alturaCasilla) {

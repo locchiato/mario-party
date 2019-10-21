@@ -17,6 +17,12 @@ public class Personaje implements Comparable<Personaje> {
 	private Casilla casillaActual;
 	private int casillasExtras;
 	private int turnosParalizados;
+	
+	//Para parte visual
+	private int deltaX = 0;
+	private int deltaY = 0;
+	
+	private boolean casillaSiguienteTienePersonaje = false;
 
 	// Se le pone un nombre al personaje (nickname)
 	public Personaje(String nom) {
@@ -61,10 +67,6 @@ public class Personaje implements Comparable<Personaje> {
 		return this.estrellas == estrellasVictoria;
 	}
 
-	public boolean hayColision() {
-		return casillaActual.getPersonajePosicionado() != null;
-	}
-
 	public void paralizado(int num) {
 		this.setEstado("Paralizado");
 		this.turnosParalizados += num;
@@ -83,51 +85,53 @@ public class Personaje implements Comparable<Personaje> {
 		return this.estado != "Paralizado";
 	}
 
-	public void retroceder(int posiciones) {
+	public void retroceder(int posiciones, Mapa mapa) {
 		
-		casillaActual.desocuparCasilla(this);
 		for (int i = 0; i < posiciones; i++) {
-			casillaActual = casillaActual.getCasillaAnt();
+			casillaActual.desocuparCasilla(this);
+			
+			Casilla casillaAnt = casillaActual.getCasillaAnt();
+			if(casillaAnt.getPersonajePosicionado() == null) {
+				casillaActual = casillaAnt;
+				casillaActual.setPersonajePosicionado(this);
+				mapa.redibujar();
+			}else if(i == posiciones - 1){//Hay colision
+				System.out.println(casillaAnt.getPersonajePosicionado().nombre +" fue PISADO retrocede 2 casillas");
+				casillaAnt.getPersonajePosicionado().retroceder(2, mapa);
+			}
 		}
-		
-		this.llegarSinEfecto();
+		llegar(false);	
 	}
 
 	public void avanzar(int posiciones, Mapa mapa) {
-
+		
 		if (puedeMoverse()) {
-			casillaActual.desocuparCasilla(this);
 			for (int i = 0; i < posiciones; i++) {
-				if (this.casillaActual.getcantidadDirecciones() > 1) {
-					this.casillaActual = this.casillaActual.decisionSiguiente(mapa);
-				} else
-					casillaActual = this.casillaActual.casillaSiguiente(mapa);
+				casillaActual.desocuparCasilla(this);
+				
+				Casilla casillaSiguiente = casillaActual.casillaODesicionSig(mapa);
+				if(casillaSiguiente.getPersonajePosicionado() == null) {
+					casillaActual = casillaSiguiente;
+					casillaActual.setPersonajePosicionado(this);
+					mapa.redibujar();
+				}else if(i == posiciones - 1){//Hay colision
+					System.out.println(casillaSiguiente.getPersonajePosicionado().nombre +" fue PISADO retrocede 2 casillas");
+					casillaSiguiente.getPersonajePosicionado().retroceder(2, mapa);
+				}
 			}
-			this.llegar();
+			llegar(true);
+		}else {
+			// no avanza jugador paralizado
+			System.out.println(this.nombre +" no puede avanzar esta PARALIZADO");
 		}
-		System.out.println(this.nombre +" no puede avanzar esta PARALIZADO");
-		// no avanza jugador paralizado
 	}
 
-	public void llegar() {
-		if (hayColision()) {
-			Personaje personajePosicionado = casillaActual.getPersonajePosicionado();
-			System.out.println(personajePosicionado.nombre +" fue PISADO retrocede 2 casillas");
-			personajePosicionado.retroceder(2);
+	public void llegar(boolean llegarConEfecto) {
+		if(llegarConEfecto) {
+			casillaActual.aplicarEfecto(this);
+			System.out.println("efecto de la casilla");	
 		}
-		casillaActual.setPersonajePosicionado(this);
-		casillaActual.aplicarEfecto(this);
-		System.out.println("efecto de la casilla");
 	}
-	
-	public void llegarSinEfecto() {
-		if (hayColision()) {
-			Personaje personajePosicionado = casillaActual.getPersonajePosicionado();
-			personajePosicionado.retroceder(2);
-		}
-		casillaActual.setPersonajePosicionado(this);
-	}
-	
 	
 	//falta testear
 	public void recogerItem(Articulo articulo) {

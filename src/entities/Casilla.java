@@ -20,6 +20,7 @@ public class Casilla {
 		calcularTotalDirecciones();
 	}
 
+
 	public void aplicarEfecto(Personaje pj) {
 		System.out.println("Se aplico efecto.");
 	}
@@ -171,6 +172,14 @@ public class Casilla {
 
 	public void setX(int x) {
 		this.x = x;
+	}
+
+	public Casilla casillaODesicionSig(Mapa mapa) {
+		if (getcantidadDirecciones() > 1) {
+			return decisionSiguiente(mapa);
+		} else {
+			return casillaSiguiente(mapa);
+		}
 	}
 
 }

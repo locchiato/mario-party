@@ -16,7 +16,7 @@ public class Main {
 		
 		
 		List<Jugador> listaJug = new ArrayList<Jugador>();
-		listaJug.add(new Jugador("Batman"));
+		//listaJug.add(new Jugador("Batman"));
 		listaJug.add(new Jugador("Robin"));
 		listaJug.add(new Jugador("Superman"));
 		

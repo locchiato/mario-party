@@ -1,10 +1,6 @@
 package entities;
-
-import java.util.Scanner;
-
 import entities.Personaje;
 import entities.threads.EsperarThread;
-import entities.threads.TeclaThread;
 
 public class Casilla {
 	private int x;

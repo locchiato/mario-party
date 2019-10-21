@@ -64,7 +64,7 @@ public class Personaje implements Comparable<Personaje> {
 	}
 
 	public boolean esGanador(int estrellasVictoria) {
-		return this.estrellas == estrellasVictoria;
+		return this.estrellas >= estrellasVictoria;
 	}
 
 	public void paralizado(int num) {
@@ -123,6 +123,7 @@ public class Personaje implements Comparable<Personaje> {
 		}else {
 			// no avanza jugador paralizado
 			System.out.println(this.nombre +" no puede avanzar esta PARALIZADO");
+			this.curarParalisis(1);
 		}
 	}
 

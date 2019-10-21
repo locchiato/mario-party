@@ -20,7 +20,6 @@ public class Casilla {
 		calcularTotalDirecciones();
 	}
 
-
 	public void aplicarEfecto(Personaje pj) {
 		System.out.println("Se aplico efecto.");
 	}

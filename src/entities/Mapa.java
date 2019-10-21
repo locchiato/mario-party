@@ -85,7 +85,7 @@ public class Mapa implements EscucharTeclaInterface{
 		//MAC
 		String Path = "recursos/Tableros/";
 		// String Path = "..\\..\\..\\recursos\\Tableros\\";
-		Scanner sc = new Scanner(new File(Path + "tablero2.txt"));
+		Scanner sc = new Scanner(new File(Path + "tablero3.txt"));
 
 		this.tablero = new Casilla[sc.nextInt()][sc.nextInt()];
 

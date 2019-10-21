@@ -47,15 +47,19 @@ public class Casilla {
 	public Casilla decisionSiguiente(Mapa mapa) {
 		mostrarDireccionesPosibles();
 		int respuesta = ingresarDireccion(mapa);
+		while(!this.direcciones[respuesta]){
+			System.out.println("No se puede mover ahi");
+			respuesta = ingresarDireccion(mapa);
+		}
 		System.out.println("respuesta: " + respuesta);
-
+		
 		return calcularCasilla(mapa, respuesta);
 	}
 
 	// 0 = norte(arriba) - 1 = sur (abajo) - 2 = este(derecha) - 3 =
 	// oeste(izquierda)
-	private Casilla calcularCasilla(Mapa mapa, int direccion) {
-
+	private Casilla calcularCasilla(Mapa mapa, int direccion){
+		
 		switch (direccion) {
 		case 0:
 			return mapa.obtenerCasilla(this.x - 1, this.y);

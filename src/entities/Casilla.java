@@ -92,6 +92,14 @@ public class Casilla {
 			this.personajePosicionado = null;
 		}
 	}
+	
+	public Casilla casillaODesicionSig(Mapa mapa) {
+		if (getcantidadDirecciones() > 1) {
+			return decisionSiguiente(mapa);
+		} else {
+			return casillaSiguiente(mapa);
+		}
+	}
 
 	public int ingresarDireccion() {
 //		Scanner entrada = new Scanner(System.in);
@@ -171,14 +179,6 @@ public class Casilla {
 
 	public void setX(int x) {
 		this.x = x;
-	}
-
-	public Casilla casillaODesicionSig(Mapa mapa) {
-		if (getcantidadDirecciones() > 1) {
-			return decisionSiguiente(mapa);
-		} else {
-			return casillaSiguiente(mapa);
-		}
 	}
 
 }

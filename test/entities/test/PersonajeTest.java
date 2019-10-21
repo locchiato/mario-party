@@ -117,7 +117,7 @@ public class PersonajeTest {
 		pj.setCasillaActual(casillaInicial);
 		assertEquals(casillaInicial, pj.getCasillaActual());
 		System.out.println(pj.getCasillaActual().getY());
-		pj.retroceder(2);
+		pj.retroceder(2,null);
 		assertEquals(CasillaFinal, pj.getCasillaActual());
 		System.out.println(pj.getCasillaActual().getY());
 	}

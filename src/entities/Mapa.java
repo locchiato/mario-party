@@ -2,9 +2,7 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
-import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -12,15 +10,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
-
 import entities.Casilla;
 import entities.Dado;
 import entities.Jugador;
 import entities.Minijuego;
 import entities.Personaje;
+import entities.threads.EsperarThread;
+import ui.EscucharTeclaInterface;
 import ui.MarioJFrame;
 
-public class Mapa {
+public class Mapa implements EscucharTeclaInterface{
 
 	private Dado dado;
 	private Casilla[][] tablero;
@@ -30,6 +29,8 @@ public class Mapa {
 	private int estrellasVictoria = 10;
 	private Casilla casillaInicio;
 	private MarioJFrame jFrame;
+	
+	private int teclaPresionada = -1;
 
 	// Constructor , aca comienza la partida
 	public Mapa(List<Jugador> listaJug, int cantidadRondas) throws FileNotFoundException {
@@ -39,7 +40,7 @@ public class Mapa {
 		rellenarCasillas();
 
 		for (Jugador jug : listaJug) {
-			Personaje p = new Personaje(jug.getNickName());
+			Personaje p = new Personaje(jug.getNickName(), jug.getColor());
 			p.setCasillaActual(casillaInicio);
 			jugadores.add(p);
 		}
@@ -181,7 +182,7 @@ public class Mapa {
 	public void inicioJuego() {
 		//Se dibuja la ventana
 		
-		jFrame = new MarioJFrame(tablero, tablero.length);
+		jFrame = new MarioJFrame(tablero, tablero.length, this);
 		
 		// Aca se van a jugar las rondas hasta ver quien gana
 		// rondas del juego
@@ -205,8 +206,10 @@ public class Mapa {
 	}
 	
 	public void redibujar() {
+		long tiempo = 500;
+		
 		jFrame.redibujar(tablero);
-		new EsperarParaRedibujarThread().run();
+		new EsperarThread(tiempo).run();
 	}
 
 	public void definirPosiciones() {
@@ -324,6 +327,27 @@ public class Mapa {
 
 	public void setCasillaInicio(Casilla casillaInicio) {
 		this.casillaInicio = casillaInicio;
+	}
+
+	public void escucharTeclas() {
+		
+		jFrame.escucharTeclas();
+		
+	}
+
+	@Override
+	public void teclaPresionada(int tecla) {
+		this.teclaPresionada = tecla;
+	}
+
+	@Override
+	public int getTeclaPresionada() {
+		return teclaPresionada;
+	}
+
+	@Override
+	public void limpiarTeclaPresionada() {
+		teclaPresionada = -1;
 	}
 
 }

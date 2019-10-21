@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,14 +19,11 @@ public class Personaje implements Comparable<Personaje> {
 	private int casillasExtras;
 	private int turnosParalizados;
 	
-	//Para parte visual
-	private int deltaX = 0;
-	private int deltaY = 0;
-	
-	private boolean casillaSiguienteTienePersonaje = false;
+	//para parte visual
+	private Color color;
 
 	// Se le pone un nombre al personaje (nickname)
-	public Personaje(String nom) {
+	public Personaje(String nom, Color color) {
 		// this.turno = false;
 		this.nombre = nom;
 		this.monedas = 0;
@@ -33,6 +31,11 @@ public class Personaje implements Comparable<Personaje> {
 		this.estado = "Normal";
 		// this.numJug = num;
 		this.items = new ArrayList<Articulo>();
+		this.color = color;
+	}
+	
+	public Color getColor(){
+		return color;
 	}
 
 	// Funciones del personaje

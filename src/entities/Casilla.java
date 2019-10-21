@@ -3,6 +3,8 @@ package entities;
 import java.util.Scanner;
 
 import entities.Personaje;
+import entities.threads.EsperarThread;
+import entities.threads.TeclaThread;
 
 public class Casilla {
 	private int x;
@@ -48,7 +50,7 @@ public class Casilla {
 
 	public Casilla decisionSiguiente(Mapa mapa) {
 		mostrarDireccionesPosibles();
-		int respuesta = ingresarDireccion();
+		int respuesta = ingresarDireccion(mapa);
 		System.out.println("respuesta: " + respuesta);
 
 		return calcularCasilla(mapa, respuesta);
@@ -101,22 +103,16 @@ public class Casilla {
 		}
 	}
 
-	public int ingresarDireccion() {
-//		Scanner entrada = new Scanner(System.in);
-		System.out.print("Ingresar el numero de la direccion: ");
-		//prueba
-		int respuesta = 0;
-
+	public int ingresarDireccion(Mapa mapa) {
+		//comienza a escuchar teclas
+		mapa.escucharTeclas();
 		
-//		int respuesta = entrada.nextInt();
-//		while (respuesta < 0 || respuesta > 3 || direcciones[respuesta] != true) {
-//			System.out.println();
-//			System.out.println("Direccion incorreta");
-//			System.out.print("Ingrese un numero nuevamente: ");
-//			respuesta = entrada.nextInt();
-//		}
-//		entrada.close();
-		return respuesta;
+		while(mapa.getTeclaPresionada() == -1) {
+			new EsperarThread(50).run();
+		}
+		int teclaPresionada = mapa.getTeclaPresionada();
+		mapa.limpiarTeclaPresionada();
+		return teclaPresionada;	
 	}
 
 //	private void cerrarPrimera() {

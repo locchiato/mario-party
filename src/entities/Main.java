@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,9 @@ public class Main {
 		
 		
 		List<Jugador> listaJug = new ArrayList<Jugador>();
-		listaJug.add(new Jugador("Batman"));
-		listaJug.add(new Jugador("Robin"));
-		listaJug.add(new Jugador("Superman"));
+		listaJug.add(new Jugador("Batman", Color.RED));
+		listaJug.add(new Jugador("Robin", Color.BLUE));
+		listaJug.add(new Jugador("Superman", Color.BLACK));
 		
 		Mapa m = new Mapa(listaJug,50);
 	}

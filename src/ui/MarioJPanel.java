@@ -63,7 +63,7 @@ public class MarioJPanel extends JPanel {
 					lienzo.fillRect(posicionX, posicionY, alturaCasilla, alturaCasilla);
 					
 					if(tablero[i][j].getPersonajePosicionado() != null) {
-						dibujarPersonaje(lienzo, posicionX, posicionY, alturaCasilla);
+						dibujarPersonaje(lienzo, posicionX, posicionY, alturaCasilla, tablero[i][j].getPersonajePosicionado());
 					}
 				}
 				
@@ -79,11 +79,11 @@ public class MarioJPanel extends JPanel {
 		repaint();
 	}
 
-	private void dibujarPersonaje(Graphics2D lienzo, int posicionX, int posicionY, int alturaCasilla) {
+	private void dibujarPersonaje(Graphics2D lienzo, int posicionX, int posicionY, int alturaCasilla, Personaje personaje) {
 		final int borde = alturaCasilla / 6;
 		int alturaPersonaje = alturaCasilla - (2 * borde);
 		
-		lienzo.setPaint(Color.BLUE);
+		lienzo.setPaint(personaje.getColor());
 		lienzo.fillRect(posicionX + borde, posicionY + borde, alturaPersonaje, alturaPersonaje);
 		lienzo.setPaint(Color.CYAN);
 		lienzo.drawRect(posicionX + borde, posicionY + borde, alturaPersonaje / 2, alturaPersonaje / 2);

@@ -52,7 +52,7 @@ public class MarioJFrame extends JFrame {
 						break;
 
 					default:
-						System.out.println("Tecla invalida, vuelva a ingresar");
+						System.out.println("La tecla "+e.getKeyChar()+"es invalida, vuelva a ingresar");
 						escucharTeclas = true;
 						break;
 					}

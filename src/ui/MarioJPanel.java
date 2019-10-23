@@ -5,14 +5,19 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.JPanel;
 import javax.swing.RepaintManager;
 import javax.swing.border.EmptyBorder;
-import entities.Casilla;
+
 import entities.Personaje;
+import entities.casilla.Casilla;
+import entities.casilla.CasillaGanarEstrella;
+import entities.casilla.CasillaParalizar;
+import entities.casilla.CasillaSumarRestarMonedas;
 
 public class MarioJPanel extends JPanel {
 
@@ -59,7 +64,8 @@ public class MarioJPanel extends JPanel {
 				} else {
 					lienzo.setPaint(colorBorde);
 					lienzo.drawRect(posicionX, posicionY, alturaCasilla, alturaCasilla);
-					lienzo.setPaint(colorCamino);
+					//lienzo.setPaint(colorCamino);
+					lienzo.setPaint(conseguirColorCasilla(tablero[i][j], colorCamino));
 					lienzo.fillRect(posicionX, posicionY, alturaCasilla, alturaCasilla);
 					
 					if(tablero[i][j].getPersonajePosicionado() != null) {
@@ -74,6 +80,17 @@ public class MarioJPanel extends JPanel {
 		}
 	}
 	
+	private Color conseguirColorCasilla(Casilla casilla, Color colorDefault) {
+		if(casilla instanceof CasillaParalizar) {
+			return Color.GREEN;
+		}else if(casilla instanceof CasillaGanarEstrella) {
+			return Color.YELLOW;
+		}else if(casilla instanceof CasillaSumarRestarMonedas) {
+			return Color.RED;
+		}
+		return colorDefault;
+	}
+
 	public void redibujar(Casilla[][] tablero){
 		this.tablero = tablero;
 		repaint();

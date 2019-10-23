@@ -8,9 +8,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.Casilla;
 import entities.Jugador;
 import entities.Mapa;
+import entities.casilla.Casilla;
 
 class MapaTest {
 	

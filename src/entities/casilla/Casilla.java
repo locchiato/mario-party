@@ -1,4 +1,5 @@
-package entities;
+package entities.casilla;
+import entities.Mapa;
 import entities.Personaje;
 import entities.threads.EsperarThread;
 

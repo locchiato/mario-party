@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.junit.Test;
 
-import entities.Casilla;
-import entities.CasillaSumarRestarMonedas;
 import entities.Jugador;
 import entities.Mapa;
 import entities.Personaje;
+import entities.casilla.Casilla;
+import entities.casilla.CasillaSumarRestarMonedas;
 
 public class PersonajeTest {
 

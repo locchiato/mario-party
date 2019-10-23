@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import entities.Articulo;
-import entities.Casilla;
+import entities.casilla.Casilla;
 
 public class Personaje implements Comparable<Personaje> {
 

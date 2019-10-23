@@ -1,4 +1,6 @@
-package entities;
+package entities.casilla;
+
+import entities.Personaje;
 
 public class CasillaGanarEstrella extends Casilla {
 

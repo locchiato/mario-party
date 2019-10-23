@@ -10,11 +10,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
-import entities.Casilla;
+
 import entities.Dado;
 import entities.Jugador;
 import entities.Minijuego;
 import entities.Personaje;
+import entities.casilla.Casilla;
+import entities.casilla.CasillaGanarEstrella;
+import entities.casilla.CasillaParalizar;
+import entities.casilla.CasillaSumarRestarMonedas;
 import entities.threads.EsperarThread;
 import ui.EscucharTeclaInterface;
 import ui.MarioJFrame;

@@ -8,13 +8,13 @@ import java.util.List;
 
 import org.junit.Test;
 
-import entities.Casilla;
-import entities.CasillaGanarEstrella;
-import entities.CasillaParalizar;
-import entities.CasillaSumarRestarMonedas;
 import entities.Jugador;
 import entities.Mapa;
 import entities.Personaje;
+import entities.casilla.Casilla;
+import entities.casilla.CasillaGanarEstrella;
+import entities.casilla.CasillaParalizar;
+import entities.casilla.CasillaSumarRestarMonedas;
 
 
 public class CasillaTest {

@@ -11,6 +11,8 @@ public class Casilla {
 	private Personaje personajePosicionado;
 	private int cantidadDirecciones = 0;
 	final static private String[] nombreDireccion = { "Arriba", "Abajo", "Derecha", "Izquierda" };
+	
+	private boolean estaTitilando = false;
 
 	public Casilla(int x, int y, boolean[] direcciones) {
 		this.x = x;
@@ -45,12 +47,12 @@ public class Casilla {
 		return null;
 	}
 
-	public Casilla decisionSiguiente(Mapa mapa) {
+	public Casilla decisionSiguiente(Mapa mapa, Personaje personaje) {
 		mostrarDireccionesPosibles();
-		int respuesta = ingresarDireccion(mapa);
+		int respuesta = ingresarDireccion(mapa, personaje);
 		while(!this.direcciones[respuesta]){
 			System.out.println("No se puede mover ahi");
-			respuesta = ingresarDireccion(mapa);
+			respuesta = ingresarDireccion(mapa, personaje);
 		}
 		System.out.println("respuesta: " + respuesta);
 		
@@ -96,24 +98,39 @@ public class Casilla {
 		}
 	}
 	
-	public Casilla casillaODesicionSig(Mapa mapa) {
+	public Casilla casillaODesicionSig(Mapa mapa, Personaje personaje) {
 		if (getcantidadDirecciones() > 1) {
-			return decisionSiguiente(mapa);
+			return decisionSiguiente(mapa, personaje);
 		} else {
 			return casillaSiguiente(mapa);
 		}
 	}
 
-	public int ingresarDireccion(Mapa mapa) {
+	public int ingresarDireccion(Mapa mapa, Personaje personaje) {
 		//comienza a escuchar teclas
 		mapa.escucharTeclas();
 		
+		//setea al personaje en la casilla temporalmente para eliminar bug
+		setPersonajePosicionado(personaje);
 		while(mapa.getTeclaPresionada() == -1) {
+			titilar(mapa, true, personaje);
 			new EsperarThread(50).run();
+			titilar(mapa, false, personaje);
 		}
+		desocuparCasilla(personaje);
 		int teclaPresionada = mapa.getTeclaPresionada();
 		mapa.limpiarTeclaPresionada();
 		return teclaPresionada;	
+	}
+
+	//Los lugares a donde puede moverse el personaje titilan
+	private void titilar(Mapa mapa, boolean estaTitilando, Personaje personaje) {
+		for (int i = 0; i < direcciones.length; i++) {
+			if(direcciones[i]) {
+				calcularCasilla(mapa, i).setEstaTitilando(estaTitilando);
+			}
+		}
+		mapa.redibujar();
 	}
 
 //	private void cerrarPrimera() {
@@ -176,6 +193,14 @@ public class Casilla {
 
 	public void setX(int x) {
 		this.x = x;
+	}
+	
+	public void setEstaTitilando(boolean estaTitilando) {
+		this.estaTitilando = estaTitilando;
+	}
+	
+	public boolean estaTitilando() {
+		return estaTitilando;
 	}
 
 }

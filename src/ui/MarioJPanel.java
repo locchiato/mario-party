@@ -64,7 +64,6 @@ public class MarioJPanel extends JPanel {
 				} else {
 					lienzo.setPaint(colorBorde);
 					lienzo.drawRect(posicionX, posicionY, alturaCasilla, alturaCasilla);
-					//lienzo.setPaint(colorCamino);
 					lienzo.setPaint(conseguirColorCasilla(tablero[i][j], colorCamino));
 					lienzo.fillRect(posicionX, posicionY, alturaCasilla, alturaCasilla);
 					
@@ -81,6 +80,10 @@ public class MarioJPanel extends JPanel {
 	}
 	
 	private Color conseguirColorCasilla(Casilla casilla, Color colorDefault) {
+		if(casilla.estaTitilando()) {
+			return Color.BLACK;
+		}
+		
 		if(casilla instanceof CasillaParalizar) {
 			return Color.GREEN;
 		}else if(casilla instanceof CasillaGanarEstrella) {

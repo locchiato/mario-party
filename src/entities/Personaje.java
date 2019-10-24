@@ -161,7 +161,7 @@ public void retroceder(int posiciones, Mapa mapa) {
 			Personaje pjAux;
 			casillaActual.desocuparCasilla(this);
 			for (int i = 0; i < posiciones; i++) {
-				this.casillaActual = this.casillaActual.casillaODesicionSig(mapa);
+				this.casillaActual = this.casillaActual.casillaODesicionSig(mapa, this);
 				pjAux = this.casillaActual.getPersonajePosicionado();
 				this.casillaActual.setPersonajePosicionado(this);
 				mapa.redibujar();

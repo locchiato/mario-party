@@ -1,15 +1,19 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import ui.JencuentreLaBola;
+import ui.PuntajesAnuncio;
 
 public class EncuentreLaBola extends Minijuego {
 	
 	private int elecciones[];
 	private List<Personaje> jugadores;
 	private int respuesta;
-	
-	
+	private JencuentreLaBola frameEnc;
+	private int jugAct;
 
 	public EncuentreLaBola() {
 		
@@ -20,46 +24,57 @@ public class EncuentreLaBola extends Minijuego {
 	public void jugar(List<Personaje> jugadores) {
 		this.elecciones = new int[jugadores.size()];
 		this.jugadores = jugadores;
-		
-		
-		
-		
-		
-		int eleccion;
+		jugAct=0;
+
 		this.respuesta = (int)(4 * Math.random())+1;
-		int i=0;
-		for(Personaje p:jugadores) {
-			
-			do{
-			System.out.println("Elija una opcion del 1 al 5");
-			Scanner sc=new Scanner(System.in);
-			eleccion=sc.nextInt();
-		}while(eleccion<1 && eleccion<5);
-			elecciones[i]=eleccion;		
-		}
-			anunciar(respuesta);
-		darPuntos(respuesta);	
+frameEnc=new JencuentreLaBola(this);
+frameEnc.setVisible(true);
+
 	}
 
 	
-	public void darPuntos(int resp){
+	public void setElecciones(int eleccion) {
+		elecciones[jugAct]=eleccion;
+jugAct++;
+if(jugAct==elecciones.length) {
+	darPuntos();
+}
+		
+	}
+	
+	
+	
+	
+	
+	
+	public void darPuntos(){
 		int i=0;
 		for(Personaje j:jugadores) {
-			if(elecciones[i]!=resp)
+			if(elecciones[i]!=respuesta)
 				j.sumarRestarMonedas(3);
 			else
 				j.sumarRestarMonedas(20);
-		}		
+		}	
+		anunciar();
 	}
 	
-	public void anunciar(int resp){
+	public void anunciar() {
+String msg="<html>";
+		int i = 0;
+		for (Personaje j : jugadores) {
 		
-		int i=0;
-		for(Personaje j:jugadores) {
-			if(elecciones[i]==resp)
-				System.out.println(j.getNombre()+"Gano");
-		}		
-			
+			if (elecciones[i] == respuesta)
+				msg+=j.getNombre()+" Obtuvo: 20 Puntos <br>" ;
+			else
+				msg+=j.getNombre()+" Obtuvo: 3 Puntos <br>" ;
+
+			i++;
+		}
+		msg+="</html>";
+
+		
+		PuntajesAnuncio pAnun=new PuntajesAnuncio(msg);
+		pAnun.setVisible(true);
 	}
 	
 	
@@ -73,5 +88,34 @@ public class EncuentreLaBola extends Minijuego {
 		
 		return ganador;
 	}
+	
+	public String getNombre( ) {	
+		return jugadores.get(jugAct).getNombre();	
+	}
+	
+	public boolean haySigTurno() {
+		return jugAct!=elecciones.length;
+	}
+	
+	
+	
+	
+	public static void main(String[] args) {
+		
+		List<Personaje> listaJug = new ArrayList<Personaje>();
+		listaJug.add(new Personaje("Batman"));
+		listaJug.add(new Personaje("Robin"));
+		listaJug.add(new Personaje("Superma"));
+		listaJug.add(new Personaje("Mujer Maravilla"));
+		
+		EncuentreLaBola juegoGen=new EncuentreLaBola();
+		juegoGen.jugar(listaJug);
+		
+	}
+	
+ 
+	
+	
+	
 	
 }

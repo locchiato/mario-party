@@ -1,4 +1,4 @@
-package entities;
+package entities.test;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import entities.EncuentreLaBola;
+import entities.Personaje;
 
 public class EncuentreLaBolaTest {
 

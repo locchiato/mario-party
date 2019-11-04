@@ -5,14 +5,19 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.JPanel;
 import javax.swing.RepaintManager;
 import javax.swing.border.EmptyBorder;
-import entities.Casilla;
+
 import entities.Personaje;
+import entities.casilla.Casilla;
+import entities.casilla.CasillaGanarEstrella;
+import entities.casilla.CasillaParalizar;
+import entities.casilla.CasillaSumarRestarMonedas;
 
 public class MarioJPanel extends JPanel {
 
@@ -26,45 +31,7 @@ public class MarioJPanel extends JPanel {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new BorderLayout(0, 0));
 		this.cantidadCasillas = cantidadCasillas;
-		// this.tablero = tablero;
-		llenarTableroParaProbar();
-	
-	}
-
-	private void llenarTableroParaProbar() {
-		tablero = new Casilla[cantidadCasillas][cantidadCasillas];
-		//EJEMPLO NO DIMANICO solo funciona con cantidadCasillas >= 12
-		tablero[0][0] = new Casilla(0, 0, new boolean[2]);
-		tablero[0][1] = new Casilla(0, 0, new boolean[2]);
-		tablero[0][2] = new Casilla(0, 0, new boolean[2]);
-		tablero[0][3] = new Casilla(0, 0, new boolean[2]);
-		tablero[1][3] = new Casilla(0, 0, new boolean[2]);
-		tablero[1][4] = new Casilla(0, 0, new boolean[2]);
-		tablero[1][5] = new Casilla(0, 0, new boolean[2]);
-		tablero[2][5] = new Casilla(0, 0, new boolean[2]);
-		tablero[3][5] = new Casilla(0, 0, new boolean[2]);
-		tablero[4][5] = new Casilla(0, 0, new boolean[2]);
-		tablero[5][5] = new Casilla(0, 0, new boolean[2]);
-		tablero[6][5] = new Casilla(0, 0, new boolean[2]);
-		tablero[7][5] = new Casilla(0, 0, new boolean[2]);
-		tablero[7][6] = new Casilla(0, 0, new boolean[2]);
-		tablero[7][7] = new Casilla(0, 0, new boolean[2]);
-		tablero[7][8] = new Casilla(0, 0, new boolean[2]);
-		tablero[7][9] = new Casilla(0, 0, new boolean[2]);
-		tablero[8][9] = new Casilla(0, 0, new boolean[2]);
-		tablero[9][9] = new Casilla(0, 0, new boolean[2]);
-		tablero[9][10] = new Casilla(0, 0, new boolean[2]);
-		tablero[10][10] = new Casilla(0, 0, new boolean[2]);
-		tablero[11][10] = new Casilla(0, 0, new boolean[2]);
-		tablero[11][11] = new Casilla(0, 0, new boolean[2]);
-		
-		tablero[3][5].setPersonajePosicionado(new Personaje("pepe"));
-		tablero[7][7].setPersonajePosicionado(new Personaje("pepe"));
-		/*
-		 * for(int fil = 0; fil < cantidadCasillas; fil++) { for(int col = 0; col <
-		 * cantidadCasillas; col++) { if(fil % 2 == 0) { tablero[fil][col] = new
-		 * Casilla(0,0,0); }else { tablero[fil][col] = null; } } }
-		 */
+		this.tablero = tablero;
 	}
 
 	@Override
@@ -97,11 +64,11 @@ public class MarioJPanel extends JPanel {
 				} else {
 					lienzo.setPaint(colorBorde);
 					lienzo.drawRect(posicionX, posicionY, alturaCasilla, alturaCasilla);
-					lienzo.setPaint(colorCamino);
+					lienzo.setPaint(conseguirColorCasilla(tablero[i][j], colorCamino));
 					lienzo.fillRect(posicionX, posicionY, alturaCasilla, alturaCasilla);
 					
 					if(tablero[i][j].getPersonajePosicionado() != null) {
-						dibujarPersonaje(lienzo, posicionX, posicionY, alturaCasilla);
+						dibujarPersonaje(lienzo, posicionX, posicionY, alturaCasilla, tablero[i][j].getPersonajePosicionado());
 					}
 				}
 				
@@ -111,12 +78,32 @@ public class MarioJPanel extends JPanel {
 			posicionY += alturaCasilla;
 		}
 	}
+	
+	private Color conseguirColorCasilla(Casilla casilla, Color colorDefault) {
+		if(casilla.estaTitilando()) {
+			return Color.BLACK;
+		}
+		
+		if(casilla instanceof CasillaParalizar) {
+			return Color.GREEN;
+		}else if(casilla instanceof CasillaGanarEstrella) {
+			return Color.YELLOW;
+		}else if(casilla instanceof CasillaSumarRestarMonedas) {
+			return Color.RED;
+		}
+		return colorDefault;
+	}
 
-	private void dibujarPersonaje(Graphics2D lienzo, int posicionX, int posicionY, int alturaCasilla) {
+	public void redibujar(Casilla[][] tablero){
+		this.tablero = tablero;
+		repaint();
+	}
+
+	private void dibujarPersonaje(Graphics2D lienzo, int posicionX, int posicionY, int alturaCasilla, Personaje personaje) {
 		final int borde = alturaCasilla / 6;
 		int alturaPersonaje = alturaCasilla - (2 * borde);
 		
-		lienzo.setPaint(Color.BLUE);
+		lienzo.setPaint(personaje.getColor());
 		lienzo.fillRect(posicionX + borde, posicionY + borde, alturaPersonaje, alturaPersonaje);
 		lienzo.setPaint(Color.CYAN);
 		lienzo.drawRect(posicionX + borde, posicionY + borde, alturaPersonaje / 2, alturaPersonaje / 2);

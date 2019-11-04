@@ -1,18 +1,16 @@
 package entities.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import entities.Casilla;
 import entities.Jugador;
 import entities.Mapa;
-import entities.Personaje;
+import entities.casilla.Casilla;
 
 class MapaTest {
 	

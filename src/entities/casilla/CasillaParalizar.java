@@ -1,6 +1,8 @@
-package entities;
+package entities.casilla;
 
-public class CasillaParalizar extends Casilla{
+import entities.Personaje;
+
+public class CasillaParalizar extends Casilla {
 	private int turnosParalizado;
 	
 	public CasillaParalizar(int x, int y, boolean[] direcciones, int turnosParalizado) {

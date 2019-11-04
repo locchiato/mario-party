@@ -1,16 +1,24 @@
 package entities;
 
+import java.awt.Color;
+
 public class Jugador {
 	
 	private String nickName;
 	private String estado;
 	private String clave;
+	private Color color;
 	
-	public Jugador(String nick) {
+	public Jugador(String nick, Color color) {
 		this.nickName = nick;
 		//this.clave = clave;
+		this.color = color;
 	}
 
+	public Color getColor() {
+		return color;
+	}
+	
 	public String getNickName() {
 		return nickName;
 	}

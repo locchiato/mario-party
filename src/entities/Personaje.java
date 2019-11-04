@@ -1,12 +1,13 @@
 package entities;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Scanner;
 import entities.Articulo;
-import entities.Casilla;
+import entities.casilla.Casilla;
 
-public class Personaje {
+public class Personaje implements Comparable<Personaje> {
 
 	private String nombre;
 	private List<Articulo> items;
@@ -14,12 +15,14 @@ public class Personaje {
 	private int estrellas;
 	private String estado;
 	private Casilla casillaActual;
-	// private int numJug;
-	// private boolean turno;
+	private int casillasExtras;
 	private int turnosParalizados;
+	
+	//para parte visual
+	private Color color;
 
 	// Se le pone un nombre al personaje (nickname)
-	public Personaje(String nom) {
+	public Personaje(String nom, Color color) {
 		// this.turno = false;
 		this.nombre = nom;
 		this.monedas = 0;
@@ -27,9 +30,29 @@ public class Personaje {
 		this.estado = "Normal";
 		// this.numJug = num;
 		this.items = new ArrayList<Articulo>();
+		this.color = color;
+	}
+	
+	public Color getColor(){
+		return color;
 	}
 
 	// Funciones del personaje
+	
+	@Override
+	public int compareTo(Personaje otro) {
+		if(this.estrellas > otro.estrellas) {
+			return -1;
+		}
+		if(this.estrellas == otro.estrellas && this.monedas > otro.monedas) {
+				return -1;
+		}
+		
+		if(this.estrellas == otro.estrellas && this.monedas == otro.monedas) {
+			return 0;
+		}
+		return 1;
+	}
 
 	public void sumarRestarMonedas(int cantMonedas) {
 		this.monedas += cantMonedas;
@@ -43,16 +66,16 @@ public class Personaje {
 	}
 
 	public boolean esGanador(int estrellasVictoria) {
-		return this.estrellas == estrellasVictoria;
-	}
-
-	public boolean hayColision() {
-		return casillaActual.getPersonajePosicionado() != null;
+		return this.estrellas >= estrellasVictoria;
 	}
 
 	public void paralizado(int num) {
 		this.setEstado("Paralizado");
 		this.turnosParalizados += num;
+	}
+	
+	public boolean hayColision() {
+		return this.casillaActual.getPersonajePosicionado() != null;
 	}
 
 	public void curarParalisis(int num) {
@@ -68,72 +91,155 @@ public class Personaje {
 		return this.estado != "Paralizado";
 	}
 
-	public void retroceder(int posiciones) {
-		
+//	public void retroceder(int posiciones, Mapa mapa) {
+//		
+//		for (int i = 0; i < posiciones; i++) {
+//			casillaActual.desocuparCasilla(this);
+//			
+//			Casilla casillaAnt = casillaActual.getCasillaAnt();
+//			if(casillaAnt.getPersonajePosicionado() == null) {
+//				casillaActual = casillaAnt;
+//				casillaActual.setPersonajePosicionado(this);
+//				mapa.redibujar();
+//			}else if(i == posiciones - 1){//Hay colision
+//				System.out.println(casillaAnt.getPersonajePosicionado().nombre +" fue PISADO retrocede 2 casillas");
+//				casillaAnt.getPersonajePosicionado().retroceder(2, mapa);
+//			}
+//		}
+//		llegar(false);	
+//	}
+
+//	public void avanzar(int posiciones, Mapa mapa) {
+//		
+//		if (puedeMoverse()) {
+//			for (int i = 0; i < posiciones; i++) {
+//				casillaActual.desocuparCasilla(this);
+//				
+//				Casilla casillaSiguiente = casillaActual.casillaODesicionSig(mapa);
+//				if(casillaSiguiente.getPersonajePosicionado() == null) {
+//					casillaActual = casillaSiguiente;
+//					casillaActual.setPersonajePosicionado(this);
+//					mapa.redibujar();
+//				}else if(i == posiciones - 1){//Hay colision
+//					System.out.println(casillaSiguiente.getPersonajePosicionado().nombre +" fue PISADO retrocede 2 casillas");
+//					casillaSiguiente.getPersonajePosicionado().retroceder(2, mapa);
+//				}
+//			}
+//			this.llegar(true);
+//		}else {
+//			// no avanza jugador paralizado
+//			System.out.println(this.nombre +" no puede avanzar esta PARALIZADO");
+//			this.curarParalisis(1);
+//		}
+//	}
+
+//	public void llegar(boolean llegarConEfecto) {
+//		if(llegarConEfecto) {
+//			casillaActual.aplicarEfecto(this);
+//			System.out.println("efecto de la casilla");	
+//		}
+//	}
+	/////////////////////////////////////////////////////////////////////////////////////////
+public void retroceder(int posiciones, Mapa mapa) {
+		Personaje pjAux;
 		casillaActual.desocuparCasilla(this);
+		
 		for (int i = 0; i < posiciones; i++) {
 			casillaActual = casillaActual.getCasillaAnt();
+			pjAux = this.casillaActual.getPersonajePosicionado();
+			this.casillaActual.setPersonajePosicionado(this);
+			mapa.redibujar();
+			this.casillaActual.setPersonajePosicionado(pjAux);
 		}
+		
+		this.llegar(false,mapa);
 	}
 
 	public void avanzar(int posiciones, Mapa mapa) {
-
+		
 		if (puedeMoverse()) {
+			Personaje pjAux;
 			casillaActual.desocuparCasilla(this);
 			for (int i = 0; i < posiciones; i++) {
-				if (this.casillaActual.getcantidadDirecciones() > 1) {
-					this.casillaActual = this.casillaActual.decisionSiguiente(mapa);
-				} else
-					casillaActual = this.casillaActual.casillaSiguiente(mapa);
+				this.casillaActual = this.casillaActual.casillaODesicionSig(mapa, this);
+				pjAux = this.casillaActual.getPersonajePosicionado();
+				this.casillaActual.setPersonajePosicionado(this);
+				mapa.redibujar();
+				this.casillaActual.setPersonajePosicionado(pjAux);
 			}
-			llegar();
+			this.llegar(true,mapa);
 		}
-		// no avanza jugador paralizado
+		else {
+			// no avanza jugador paralizado
+			System.out.println(this.nombre +" no puede avanzar esta PARALIZADO");
+			this.curarParalisis(1);
+		}
 	}
 
-	public void llegar() {
+	public void llegar(boolean llegarConEfecto,Mapa mapa) {
 		if (hayColision()) {
 			Personaje personajePosicionado = casillaActual.getPersonajePosicionado();
-			personajePosicionado.retroceder(1);
+			this.casillaActual.setPersonajePosicionado(this);
+			System.out.println(personajePosicionado.nombre +" fue PISADO retrocede 2 casillas");
+			personajePosicionado.retroceder(2,mapa);
+		}else {
+			this.casillaActual.setPersonajePosicionado(this);
 		}
-		casillaActual.setPersonajePosicionado(this);
-		casillaActual.aplicarEfecto(this);
+		if(llegarConEfecto) {
+			casillaActual.aplicarEfecto(this);
+			System.out.println("efecto de la casilla");
+		}
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////
+	
+	//falta testear
+	public void recogerItem(Articulo articulo) {
+		this.items.add(articulo);
 	}
 
-//	public void recogerItem(Articulo articulo) {
-//	this.items.add(articulo);
-//}
-
-//	public Personaje seleccionarPersonaje(LinkedList<Personaje> lista) {
-//	int i = 0, num;
-//	for (Personaje pj : lista) {
-//		System.out.println(i + " : " + pj.nombre);
-//		i++;
-//	}
-//	System.out.println("Elige un personaje :");
-//	// Eleccion por teclado
-//	num = 1;
-//	// Segun efecto selecciona a otro jugador o a uno mismo
-//	return lista.get(num);
-//}
-
-//public Articulo elegirItem(int itemNumber) {
-//	if (--itemNumber >= 0 && itemNumber < items.size()) {
-//		Articulo item = this.items.get(itemNumber);
-//		if (item != null)
-//			this.items.remove(itemNumber);
-//		return item;
-//	}
-//	return null;
-//}
+	public Personaje seleccionarPersonaje(List<Personaje> jugadores) {
+		int i = 0, num;
+		for (Personaje pj : jugadores) {
+			System.out.println(i + " : " + pj.nombre);
+			i++;
+		}
+		System.out.println("Elige un personaje :");
+		// Eleccion por teclado , nunca a uno mismo
+		num = 1;
+		return jugadores.get(num);
+	}
 	
-//	public int getNumJug() {
-//	return numJug;
-//}
-//
-//public void setNumJug(int numJug) {
-//	this.numJug = numJug;
-//}
+
+
+	public int elegirItem() {
+		int indice = 1;
+		Scanner entradaEscaner;
+		int itemSel;
+		if (this.items.size() != 0) {
+			for (Articulo art : this.items) {
+				System.out.println("Elija un item:");
+				System.out.println(indice + "-" + art.getClass().getName());
+
+			}
+			entradaEscaner = new Scanner(System.in);
+			itemSel = entradaEscaner.nextInt();
+			entradaEscaner.close();
+			return itemSel - 1;
+		}
+		return -1;
+	}
+
+	public void usarItem(int itemNumber, List<Personaje> jugadores) {
+		Personaje eleccion;
+		if (this.items.get(itemNumber).getEfecto() == 1) {
+			eleccion = this.seleccionarPersonaje(jugadores);
+			this.items.get(itemNumber).usarArticulo(eleccion, jugadores);
+		} else {
+			this.items.get(itemNumber).usarArticulo(this, jugadores);
+		}
+		this.items.remove(itemNumber);
+	}
 
 
 	// Setters y Getters
@@ -177,5 +283,14 @@ public class Personaje {
 	public int getTurnosParalizados() {
 		return turnosParalizados;
 	}
+
+	public int getCasillasExtras() {
+		return this.casillasExtras;
+	}
+	
+	public void setCasillasExtras(int cas) {
+		this.casillasExtras = cas;
+	}
+
 
 }

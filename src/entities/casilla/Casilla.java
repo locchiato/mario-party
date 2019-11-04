@@ -1,8 +1,7 @@
-package entities;
-
-import java.util.Scanner;
-
+package entities.casilla;
+import entities.Mapa;
 import entities.Personaje;
+import entities.threads.EsperarThread;
 
 public class Casilla {
 	private int x;
@@ -12,6 +11,8 @@ public class Casilla {
 	private Personaje personajePosicionado;
 	private int cantidadDirecciones = 0;
 	final static private String[] nombreDireccion = { "Arriba", "Abajo", "Derecha", "Izquierda" };
+	
+	private boolean estaTitilando = false;
 
 	public Casilla(int x, int y, boolean[] direcciones) {
 		this.x = x;
@@ -46,17 +47,22 @@ public class Casilla {
 		return null;
 	}
 
-	public Casilla decisionSiguiente(Mapa mapa) {
+	public Casilla decisionSiguiente(Mapa mapa, Personaje personaje) {
 		mostrarDireccionesPosibles();
-		int respuesta = ingresarDireccion();
-
+		int respuesta = ingresarDireccion(mapa, personaje);
+		while(!this.direcciones[respuesta]){
+			System.out.println("No se puede mover ahi");
+			respuesta = ingresarDireccion(mapa, personaje);
+		}
+		System.out.println("respuesta: " + respuesta);
+		
 		return calcularCasilla(mapa, respuesta);
 	}
 
 	// 0 = norte(arriba) - 1 = sur (abajo) - 2 = este(derecha) - 3 =
 	// oeste(izquierda)
-	private Casilla calcularCasilla(Mapa mapa, int direccion) {
-
+	private Casilla calcularCasilla(Mapa mapa, int direccion){
+		
 		switch (direccion) {
 		case 0:
 			return mapa.obtenerCasilla(this.x - 1, this.y);
@@ -91,19 +97,40 @@ public class Casilla {
 			this.personajePosicionado = null;
 		}
 	}
-
-	public int ingresarDireccion() {
-		Scanner entrada = new Scanner(System.in);
-		System.out.print("Ingresar el numero de la direccion: ");
-		int respuesta = entrada.nextInt();
-		while (respuesta < 0 || respuesta > 4 || direcciones[respuesta] != true) {
-			System.out.println();
-			System.out.println("Direccion incorreta");
-			System.out.print("Ingrese un numero nuevamente: ");
-			respuesta = entrada.nextInt();
+	
+	public Casilla casillaODesicionSig(Mapa mapa, Personaje personaje) {
+		if (getcantidadDirecciones() > 1) {
+			return decisionSiguiente(mapa, personaje);
+		} else {
+			return casillaSiguiente(mapa);
 		}
-		entrada.close();
-		return respuesta;
+	}
+
+	public int ingresarDireccion(Mapa mapa, Personaje personaje) {
+		//comienza a escuchar teclas
+		mapa.escucharTeclas();
+		
+		//setea al personaje en la casilla temporalmente para eliminar bug
+		setPersonajePosicionado(personaje);
+		while(mapa.getTeclaPresionada() == -1) {
+			titilar(mapa, true, personaje);
+			new EsperarThread(50).run();
+			titilar(mapa, false, personaje);
+		}
+		desocuparCasilla(personaje);
+		int teclaPresionada = mapa.getTeclaPresionada();
+		mapa.limpiarTeclaPresionada();
+		return teclaPresionada;	
+	}
+
+	//Los lugares a donde puede moverse el personaje titilan
+	private void titilar(Mapa mapa, boolean estaTitilando, Personaje personaje) {
+		for (int i = 0; i < direcciones.length; i++) {
+			if(direcciones[i]) {
+				calcularCasilla(mapa, i).setEstaTitilando(estaTitilando);
+			}
+		}
+		mapa.redibujar();
 	}
 
 //	private void cerrarPrimera() {
@@ -166,6 +193,14 @@ public class Casilla {
 
 	public void setX(int x) {
 		this.x = x;
+	}
+	
+	public void setEstaTitilando(boolean estaTitilando) {
+		this.estaTitilando = estaTitilando;
+	}
+	
+	public boolean estaTitilando() {
+		return estaTitilando;
 	}
 
 }

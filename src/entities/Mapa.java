@@ -11,39 +11,49 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import entities.Casilla;
 import entities.Dado;
 import entities.Jugador;
 import entities.Minijuego;
 import entities.Personaje;
+import entities.casilla.Casilla;
+import entities.casilla.CasillaGanarEstrella;
+import entities.casilla.CasillaParalizar;
+import entities.casilla.CasillaSumarRestarMonedas;
+import entities.threads.EsperarThread;
+import ui.EscucharTeclaInterface;
+import ui.MarioJFrame;
 
-public class Mapa {
+public class Mapa implements EscucharTeclaInterface{
 
 	private Dado dado;
 	private Casilla[][] tablero;
 	private List<Personaje> jugadores = new LinkedList<Personaje>();
 	private List<Minijuego> minijuegos = new ArrayList<Minijuego>();
 	private int cantidadRondas;
+	private int estrellasVictoria = 10;
 	private Casilla casillaInicio;
+	private MarioJFrame jFrame;
 	
+	private int teclaPresionada = -1;
+
 	// Constructor , aca comienza la partida
-	public Mapa(List<Jugador> listaJug,int cantidadRondas) throws FileNotFoundException {
+	public Mapa(List<Jugador> listaJug, int cantidadRondas) throws FileNotFoundException {
 		this.cantidadRondas = cantidadRondas;
 		this.dado = new Dado(1, 6);
-		
+
 		rellenarCasillas();
-		
+
 		for (Jugador jug : listaJug) {
-			Personaje p = new Personaje(jug.getNickName());
+			Personaje p = new Personaje(jug.getNickName(), jug.getColor());
 			p.setCasillaActual(casillaInicio);
 			jugadores.add(p);
 		}
-		
+
 		ordenTurnos();
-		//comentar esta para poder testear los metodos de forma individual
-		//inicioJuego();
+		// comentar esta para poder testear los metodos de forma individual
+		inicioJuego();
 	}
-	
+
 	public void ordenTurnos() {
 		Map<Integer, Personaje> turnos = new TreeMap<Integer, Personaje>(Collections.reverseOrder());
 		List<Personaje> jugOrd = new LinkedList<Personaje>();
@@ -59,16 +69,28 @@ public class Mapa {
 		for (Entry<Integer, Personaje> pj : turnos.entrySet()) {
 			jugOrd.add(pj.getValue());
 		}
+		
+		//imprimir orden
+		
+		for (Personaje personaje : jugOrd) {
+			System.out.println(personaje.getNombre() + " Estrellas: " + personaje.getEstrellas() + " Monedas: "
+					+ personaje.getMonedas()+" Estado: " + personaje.getEstado());
+		}
+		
+		
 		this.jugadores = jugOrd;
 	}
 
 	// Cargar casillas con efectos aleatorios
 
 	public void rellenarCasillas() throws FileNotFoundException {
-		String Path = "recursos\\Tableros\\";
-		//String Path = "..\\..\\..\\recursos\\Tableros\\";
-		Scanner sc = new Scanner(new File(Path + "tablero1.txt"));
-		
+		//WINDOWS
+		//String Path = "recursos\\Tableros\\";
+		//MAC
+		String Path = "recursos/Tableros/";
+		// String Path = "..\\..\\..\\recursos\\Tableros\\";
+		Scanner sc = new Scanner(new File(Path + "tablero3.txt"));
+
 		this.tablero = new Casilla[sc.nextInt()][sc.nextInt()];
 
 		// casilla inicio
@@ -86,6 +108,7 @@ public class Mapa {
 		for (int j = 0; j < cantidad; j++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
+			dir = new boolean[4];
 			for (int i = 0; i < dir.length; i++) {
 				dir[i] = (sc.nextInt() == 1 ? true : false);
 			}
@@ -98,6 +121,7 @@ public class Mapa {
 		for (int j = 0; j < cantidad; j++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
+			dir = new boolean[4];
 			for (int i = 0; i < dir.length; i++) {
 				dir[i] = (sc.nextInt() == 1 ? true : false);
 			}
@@ -110,6 +134,7 @@ public class Mapa {
 		for (int j = 0; j < cantidad; j++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
+			dir = new boolean[4];
 			for (int i = 0; i < dir.length; i++) {
 				dir[i] = (sc.nextInt() == 1 ? true : false);
 			}
@@ -122,6 +147,7 @@ public class Mapa {
 		for (int j = 0; j < cantidad; j++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
+			dir = new boolean[4];
 			for (int i = 0; i < dir.length; i++) {
 				dir[i] = (sc.nextInt() == 1 ? true : false);
 			}
@@ -134,6 +160,7 @@ public class Mapa {
 		for (int j = 0; j < cantidad; j++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
+			dir = new boolean[4];
 			for (int i = 0; i < dir.length; i++) {
 				dir[i] = (sc.nextInt() == 1 ? true : false);
 			}
@@ -155,46 +182,98 @@ public class Mapa {
 		sc.close();
 
 	}
-	
-	
-
-	// Aca se ve el orden de cada uno
-//	public void ordenTurnos() {
-//		
-//		List<Integer> turnos = tirarDados();
-//		for (Personaje pj : this.jugadores) {
-//			turnos.add(pj.getNumJug());
-//		}
-//	}
 
 	public void inicioJuego() {
+		//Se dibuja la ventana
+		
+		jFrame = new MarioJFrame(tablero, tablero.length, this);
+		
 		// Aca se van a jugar las rondas hasta ver quien gana
-		
-		
-		// rondas del juego 
+		// rondas del juego
 		for (int i = 0; i < cantidadRondas; i++) {
-			
+
 			for (Personaje personaje : jugadores) {
+				System.out.println();
+				System.out.println("TURNO JUGADOR: "+ personaje.getNombre());
+				System.out.println();
 				this.iniciaTurno(personaje);
 			}
-			//turno de cada jugador por ronda
-			
-			finRonda();
+			// turno de cada jugador por ronda
+			this.finRonda();
+			if (this.hayGanador()) {
+				break;
+			}
 		}
-		
-		//fin del juego
+
+		// fin del juego
+		this.definirPosiciones();
 	}
 	
+	public void redibujar() {
+		long tiempo = 500;
+		
+		jFrame.redibujar(tablero);
+		new EsperarThread(tiempo).run();
+	}
+
+	public void definirPosiciones() {
+		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println("------------ Posiciones---------");
+		System.out.println();
+		System.out.println();
+		
+		Collections.sort(jugadores);
+
+		for (Personaje personaje : jugadores) {
+			System.out.println(personaje.getNombre() + " Estrellas: " + personaje.getEstrellas() + " Monedas: "
+					+ personaje.getMonedas()+" Estado: " + personaje.getEstado());
+		}
+
+	}
+
+	public boolean hayGanador() {
+
+		for (Personaje personaje : jugadores) {
+			if (personaje.esGanador(estrellasVictoria)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void iniciaTurno(Personaje personaje) {
-		//usa item?
-		//tira el dado
-		//avanza
-		//efecto de la casilla
+		// usa item?
+//		Scanner entrada = new Scanner(System.in);
+//		System.out.print("Prefiere usar un item en este turno? : 1 - SI , Otro - NO");
+//		int respuesta = entrada.nextInt();
+//		if (respuesta == 1) {
+//			System.out.println("Eligio usar un item");
+//			int item = personaje.elegirItem();
+//			personaje.usarItem(item, this.jugadores);
+//		} else {
+//			System.out.println("No usara un item en este turno");
+//		}
+//		entrada.close();
+		// tira el dado
+		System.out.println("El jugador " + personaje.getNombre() + " tira el dado");
 		int valorDado = this.dado.tirarDado();
+		System.out.println("El jugador " + personaje.getNombre() + " ha sacado " + valorDado);
+		//Mostrar Dado
+		
+		// avanza
 		personaje.avanzar(valorDado, this);
 	}
 
 	public void finRonda() {
+
 		int i=0;
 		int opcion;
 			for(Minijuego mj:minijuegos) {
@@ -220,12 +299,13 @@ public class Mapa {
 		}
 			
 		return dados;
+
 	}
 
-	// Getter y Setter (ver cuales no hacen falta y hay que borrarlos)
+	// Getter y Setter (ver cuales no hacen falta y borrarlos)
 
 	public Casilla obtenerCasilla(int x, int y) {
-		return  this.tablero[x][y];
+		return this.tablero[x][y];
 	}
 
 	public Dado getDado() {
@@ -275,7 +355,26 @@ public class Mapa {
 	public void setCasillaInicio(Casilla casillaInicio) {
 		this.casillaInicio = casillaInicio;
 	}
-	
-	
+
+	public void escucharTeclas() {
+		
+		jFrame.escucharTeclas();
+		
+	}
+
+	@Override
+	public void teclaPresionada(int tecla) {
+		this.teclaPresionada = tecla;
+	}
+
+	@Override
+	public int getTeclaPresionada() {
+		return teclaPresionada;
+	}
+
+	@Override
+	public void limpiarTeclaPresionada() {
+		teclaPresionada = -1;
+	}
 
 }

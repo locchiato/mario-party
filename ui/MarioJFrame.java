@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 
 import entities.casilla.Casilla;
 
+
+
 public class MarioJFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;

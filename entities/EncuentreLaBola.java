@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -103,10 +104,10 @@ String msg="<html>";
 	public static void main(String[] args) {
 		
 		List<Personaje> listaJug = new ArrayList<Personaje>();
-		listaJug.add(new Personaje("Batman"));
-		listaJug.add(new Personaje("Robin"));
-		listaJug.add(new Personaje("Superma"));
-		listaJug.add(new Personaje("Mujer Maravilla"));
+		listaJug.add(new Personaje("Batman", Color.RED));
+		listaJug.add(new Personaje("Robin", Color.RED));
+		listaJug.add(new Personaje("Superma", Color.RED));
+		listaJug.add(new Personaje("Mujer Maravilla", Color.RED));
 		
 		EncuentreLaBola juegoGen=new EncuentreLaBola();
 		juegoGen.jugar(listaJug);

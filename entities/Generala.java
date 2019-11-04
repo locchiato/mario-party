@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +19,7 @@ private int turnoActual;
 
 
 
-	public Generala(List<Personaje> jugadores) {
-		this.jugadores = jugadores;
-		this.cantidadDeJugadores = jugadores.size();
-		this.resultado = new int[this.cantidadDeJugadores];
+	public Generala() {
 
 	}
 
@@ -123,10 +121,10 @@ String msg="<html>";
 	public static void main(String[] args) {
 		
 		List<Personaje> listaJug = new ArrayList<Personaje>();
-		listaJug.add(new Personaje("Batman"));
-		listaJug.add(new Personaje("Robin"));
-		listaJug.add(new Personaje("Superma"));
-		listaJug.add(new Personaje("Mujer Maravilla"));
+		listaJug.add(new Personaje("Batman",Color.RED));
+		listaJug.add(new Personaje("Robin",Color.RED));
+		listaJug.add(new Personaje("Superma",Color.RED));
+		listaJug.add(new Personaje("Mujer Maravilla",Color.RED));
 		
 		Generala juegoGen=new Generala();
 		juegoGen.jugar(listaJug);

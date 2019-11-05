@@ -1,16 +1,18 @@
-package servidor;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
 
 public class Jugador {
+	//Este jugador lo usaremos de ejemplo pero falta actualizarlo, basicamente hay que evaluar 
+	//si a nuestro jugador debemos agregarle metodos como:
+	//setOut, getIn, etc...
 	
 	private Socket clientSocket;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	
 	
-	// NO SE SI SERAN NECESARIOS
 	private int x;
 	private int y;
 	private int direccion; // 0 arriba - 1 abajo - 2 izquierda - 3 derecha

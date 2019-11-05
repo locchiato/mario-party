@@ -1,4 +1,4 @@
-package servidor;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -26,11 +26,11 @@ public class ServidorFrame extends JFrame {
 		contentPane.setLayout(null);
 		scrollPane.setBounds(0, 0, 444, 365);
 		contentPane.add(scrollPane);
-		
+
 		mensajes = new JTextArea();
 		mensajes.setEditable(false);
 		scrollPane.setViewportView(mensajes);
-		
+
 		titulo = new JLabel("IP DEL SERVIDOR: ");
 		titulo.setFont(new Font("Consolas", Font.PLAIN, 13));
 		titulo.setBounds(10, 404, 294, 14);
@@ -39,12 +39,12 @@ public class ServidorFrame extends JFrame {
 		setVisible(true);
 	}
 
-	public void mostrarMensajeFrame(String str){
-		this.mensajes.append(str+"\n");
+	public void mostrarMensajeFrame(String str) {
+		this.mensajes.append(str + "\n");
 		this.mensajes.setCaretPosition(this.mensajes.getDocument().getLength());
 	}
-	
-	public void setIPServer(String ip){
-		this.titulo.setText("IP DEL SERVIDOR: "+ip);
+
+	public void setIPServer(String ip) {
+		this.titulo.setText("IP DEL SERVIDOR: " + ip);
 	}
 }

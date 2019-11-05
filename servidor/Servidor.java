@@ -1,4 +1,4 @@
-package servidor;
+
 import java.net.*;
 import java.util.*;
 
@@ -8,7 +8,7 @@ public class Servidor {
 
 	private ServerSocket sSocket;
 	// ESCUCHA EN EL PUERTO 5000
-	private static final int puerto = 5000;
+	private static final int PUERTO = 5000;
 
 	// ARRAYLIST DE LAS PERSONAS QUE SE CONECTAN A LA PARTIDA
 	private ArrayList<Socket> usuarios;
@@ -23,12 +23,12 @@ public class Servidor {
 
 		try {
 			// GENERO EL SERVERSOCKET
-			sSocket = new ServerSocket(puerto);
+			sSocket = new ServerSocket(PUERTO);
 			frame.setIPServer(InetAddress.getLocalHost().getHostAddress());
 			// ESCUCHO SIEMPRE A VER SI SE CONECTA UN CLIENTE
 			// UNA VEZ QUE SE CONECTA GENERO UN HILO Y LO MANDO A EJECUTAR, A ESO
 			// LO GUARDO EN UN ARRAYLIST
-			frame.mostrarMensajeFrame("ESCUCHANDO EN PUERTO 5000");
+			frame.mostrarMensajeFrame("ESCUCHANDO EN PUERTO " + PUERTO);
 			while (true) {
 				// LO PONGO A ESCUCHAR HASTA QUE RECIBA UNA CONEXION
 				Socket clientSocket = sSocket.accept();

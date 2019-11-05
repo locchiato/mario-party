@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import entities.Generala;
 import entities.Personaje;
+import minijuegos.generala.Generala;
 
 public class GeneralaTest {
 

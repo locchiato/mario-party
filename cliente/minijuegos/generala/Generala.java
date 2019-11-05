@@ -1,11 +1,13 @@
-package entities;
+package minijuegos.generala;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.Dado;
+import entities.Minijuego;
+import entities.Personaje;
 import ui.Jgenerala;
-import ui.PuntajesAnuncio;
 
 public class Generala extends Minijuego {
 
@@ -15,9 +17,7 @@ public class Generala extends Minijuego {
 	private List<Personaje> jugadores;
 	private int maximo;
 	private Dado dado;
-private int turnoActual;
-
-
+	private int turnoActual;
 
 	public Generala() {
 
@@ -25,14 +25,13 @@ private int turnoActual;
 
 	public void jugar(List<Personaje> jugadores) {
 		this.cantidadDeJugadores = jugadores.size();
-		turnoActual=0;
-		
-		
+		turnoActual = 0;
+
 		this.resultado = new int[this.cantidadDeJugadores];
 		this.jugadores = jugadores;
 		dado = new Dado(1, 6);
-		
-		Jgenerala juego=new Jgenerala(3,this);
+
+		Jgenerala juego = new Jgenerala(3, this);
 		juego.setVisible(true);
 	}
 
@@ -42,7 +41,7 @@ private int turnoActual;
 
 	public int[] tirarDados(int jug) {
 		int[] dados = new int[5 + 1];
-		dados[5]=0;
+		dados[5] = 0;
 		// en el ultimo lugar se guarda el total
 		for (int i = 0; i < 5; i++)
 			dados[5] += dados[i] = dado.tirarDado();
@@ -60,8 +59,8 @@ private int turnoActual;
 			}
 		}
 
-darPuntos();
-		
+		darPuntos();
+
 	}
 
 	public void darPuntos() {
@@ -76,21 +75,20 @@ darPuntos();
 	}
 
 	public void anunciar() {
-String msg="<html>";
+		String msg = "<html>";
 		int i = 0;
 		for (Personaje j : jugadores) {
-		
+
 			if (resultado[i] == maximo)
-				msg+=j.getNombre()+"Obtuvo: 20 Puntos <br>" ;
+				msg += j.getNombre() + "Obtuvo: 20 Puntos <br>";
 			else
-				msg+=j.getNombre()+"Obtuvo: 3 Puntos <br>" ;
+				msg += j.getNombre() + "Obtuvo: 3 Puntos <br>";
 
 			i++;
 		}
-		msg+="</html>";
+		msg += "</html>";
 
-		
-		PuntajesAnuncio pAnun=new PuntajesAnuncio(msg);
+		PuntajesAnuncio pAnun = new PuntajesAnuncio(msg);
 		pAnun.setVisible(true);
 	}
 
@@ -104,32 +102,27 @@ String msg="<html>";
 
 		return ganador;
 	}
-	
+
 	public String sigTurno() {
-		
+
 		return getNombre(turnoActual++);
 	}
-	
-	public String getNombre(int indJug) {	
-		return jugadores.get(indJug).getNombre();	
-	}
-	
 
-	
-	
-	
-	public static void main(String[] args) {
-		
-		List<Personaje> listaJug = new ArrayList<Personaje>();
-		listaJug.add(new Personaje("Batman",Color.RED));
-		listaJug.add(new Personaje("Robin",Color.RED));
-		listaJug.add(new Personaje("Superma",Color.RED));
-		listaJug.add(new Personaje("Mujer Maravilla",Color.RED));
-		
-		Generala juegoGen=new Generala();
-		juegoGen.jugar(listaJug);
-	
+	public String getNombre(int indJug) {
+		return jugadores.get(indJug).getNombre();
 	}
-	
+
+	public static void main(String[] args) {
+
+		List<Personaje> listaJug = new ArrayList<Personaje>();
+		listaJug.add(new Personaje("Batman", Color.RED));
+		listaJug.add(new Personaje("Robin", Color.RED));
+		listaJug.add(new Personaje("Superma", Color.RED));
+		listaJug.add(new Personaje("Mujer Maravilla", Color.RED));
+
+		Generala juegoGen = new Generala();
+		juegoGen.jugar(listaJug);
+
+	}
 
 }

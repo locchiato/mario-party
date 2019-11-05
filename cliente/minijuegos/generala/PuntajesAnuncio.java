@@ -1,8 +1,4 @@
-package ui;
-
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
+package minijuegos.generala;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;

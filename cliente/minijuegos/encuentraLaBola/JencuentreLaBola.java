@@ -1,4 +1,4 @@
-package ui;
+package minijuegos.encuentraLaBola;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -11,9 +11,6 @@ import java.util.Enumeration;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import entities.EncuentreLaBola;
-
 import javax.swing.JRadioButton;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
@@ -129,6 +126,7 @@ private JLabel lblJugActual;
 		
 		
 		btnElegir.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
 				

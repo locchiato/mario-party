@@ -9,8 +9,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import entities.EncuentreLaBola;
 import entities.Personaje;
+import minijuegos.encuentraLaBola.EncuentreLaBola;
 
 public class EncuentreLaBolaTest {
 

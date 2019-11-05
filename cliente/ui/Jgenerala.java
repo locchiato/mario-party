@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import entities.Generala;
+import minijuegos.generala.Generala;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -89,6 +89,7 @@ private JLabel lblTotalP;
 		
 		 btnTirar = new JButton("Tirar Dados");
 			btnTirar.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					
 					btnSiguiente.setEnabled(true);
@@ -109,6 +110,7 @@ private JLabel lblTotalP;
 		btnSiguiente = new JButton("Siguiente");
 		btnSiguiente.setEnabled(false);
 		btnSiguiente.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				vaciarLabels();
 				cargarJugador();

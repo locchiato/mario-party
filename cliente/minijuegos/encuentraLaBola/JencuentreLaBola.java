@@ -1,4 +1,4 @@
-package cliente.minijuegos.encuentraLaBola;
+package minijuegos.encuentraLaBola;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -114,11 +114,11 @@ private JLabel lblJugActual;
 		contentPane.add(lblVaso5);
 		
 		JLabel lblJugador = new JLabel("Jugador");
-		lblJugador.setBounds(21, 11, 46, 14);
+		lblJugador.setBounds(21, 11, 66, 14);
 		contentPane.add(lblJugador);
 		
 		 lblJugActual = new JLabel("");
-		lblJugActual.setBounds(89, 11, 127, 14);
+		lblJugActual.setBounds(117, 11, 127, 14);
 		contentPane.add(lblJugActual);
 		
 		cargarJugador();

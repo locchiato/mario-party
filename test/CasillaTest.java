@@ -1,7 +1,8 @@
-package entities.test;
 
+import entities.Personaje;
 import static org.junit.Assert.*;
 
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class CasillaTest {
 		boolean [] dir = {true, true, false, false};
 		casilla = new CasillaGanarEstrella(0,0,dir);
 		
-		Personaje pj  = new Personaje("Batman");
+		Personaje pj  = new Personaje("Batman",Color.RED);
 		pj.setCasillaActual(casilla);
 		
 		assertEquals(0, pj.getEstrellas());
@@ -43,7 +44,7 @@ public class CasillaTest {
 		boolean [] dir = {true, true, false, false};
 		casilla = new CasillaSumarRestarMonedas(0,0,dir,50);
 		
-		Personaje pj  = new Personaje("Batman");
+		Personaje pj  = new Personaje("Batman",Color.red);
 		pj.setCasillaActual(casilla);
 
 		assertEquals(0, pj.getMonedas());
@@ -68,7 +69,7 @@ public class CasillaTest {
 		boolean [] dir = {true, true, false, false};
 		casilla = new CasillaParalizar(0,0,dir,3);
 		
-		Personaje pj  = new Personaje("Batman");
+		Personaje pj  = new Personaje("Batman",Color.red);
 		pj.setCasillaActual(casilla);
 
 		assertEquals("Normal", pj.getEstado());
@@ -96,10 +97,10 @@ public class CasillaTest {
 		boolean [] dir = {true, false, true, false};
 		casilla = new CasillaParalizar(0,0,dir,3);
 		
-		Personaje pj  = new Personaje("Batman");
+		Personaje pj  = new Personaje("Batman",Color.red);
 		pj.setCasillaActual(casilla);
 		casilla.setPersonajePosicionado(pj);
-		Personaje pj2  = new Personaje("Robin");
+		Personaje pj2  = new Personaje("Robin",Color.red);
 		pj.setCasillaActual(casilla);
 		casilla.desocuparCasilla(pj2);
 		assertEquals(pj,casilla.getPersonajePosicionado());
@@ -112,10 +113,10 @@ public class CasillaTest {
 	public void testCalcularCasillaSiguiente() throws FileNotFoundException {
 		//prueba con el tablero1.txt
 		List<Jugador> listaJug = new ArrayList<Jugador>();
-		listaJug.add(new Jugador("Batman"));
-		listaJug.add(new Jugador("Robin"));
-		listaJug.add(new Jugador("Superma"));
-		listaJug.add(new Jugador("Mujer Maravilla"));
+		listaJug.add(new Jugador("Batman",Color.red));
+		listaJug.add(new Jugador("Robin",Color.red));
+		listaJug.add(new Jugador("Superma",Color.red));
+		listaJug.add(new Jugador("Mujer Maravilla",Color.red));
 		
 		Mapa m = new Mapa(listaJug,5);
 		

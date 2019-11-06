@@ -1,12 +1,14 @@
-package cliente.minijuegos.encuentraLaBola;
+package minijuegos.encuentraLaBola;
+
+
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import cliente.entities.Minijuego;
-import cliente.entities.Personaje;
-import cliente.minijuegos.generala.PuntajesAnuncio;
+import entities.Minijuego;
+import entities.Personaje;
+import minijuegos.generala.PuntajesAnuncio;
 
 public class EncuentreLaBola extends Minijuego {
 

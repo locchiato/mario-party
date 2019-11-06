@@ -6,4 +6,9 @@ package ui;
  * */
 public class Textos {
 	static public final String TITULO_PRINCIPAL = "Mario Party";
+	static public final String TITULO_STATS = "Estadisticas";
+	static public final String TITULO_TABLERO = "Tablero";
+	static public final String TITULO_DADO = "Dado";
+	static public final String TITULO_ITEM = "Seleccion Item";
+	static public final String TITULO_INFORME = "Informe";
 }

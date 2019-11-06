@@ -17,7 +17,8 @@ public class MarioJFrame extends JFrame {
 
 	public MarioJFrame(Casilla[][] tablero, int cantidadCasillas, EscucharTeclaInterface escucharTeclaInterface) {
 		// Full Screen
-		setExtendedState(MAXIMIZED_BOTH);
+		//setExtendedState(MAXIMIZED_BOTH);
+		setSize(500,500);
 
 		// cerrar con la X la ventana
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

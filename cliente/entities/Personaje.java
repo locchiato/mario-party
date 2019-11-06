@@ -3,7 +3,9 @@ package entities;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
+import javax.swing.JOptionPane;
+
 import entities.Articulo;
 import entities.casilla.Casilla;
 
@@ -91,55 +93,6 @@ public class Personaje implements Comparable<Personaje> {
 		return this.estado != "Paralizado";
 	}
 
-//	public void retroceder(int posiciones, Mapa mapa) {
-//		
-//		for (int i = 0; i < posiciones; i++) {
-//			casillaActual.desocuparCasilla(this);
-//			
-//			Casilla casillaAnt = casillaActual.getCasillaAnt();
-//			if(casillaAnt.getPersonajePosicionado() == null) {
-//				casillaActual = casillaAnt;
-//				casillaActual.setPersonajePosicionado(this);
-//				mapa.redibujar();
-//			}else if(i == posiciones - 1){//Hay colision
-//				System.out.println(casillaAnt.getPersonajePosicionado().nombre +" fue PISADO retrocede 2 casillas");
-//				casillaAnt.getPersonajePosicionado().retroceder(2, mapa);
-//			}
-//		}
-//		llegar(false);	
-//	}
-
-//	public void avanzar(int posiciones, Mapa mapa) {
-//		
-//		if (puedeMoverse()) {
-//			for (int i = 0; i < posiciones; i++) {
-//				casillaActual.desocuparCasilla(this);
-//				
-//				Casilla casillaSiguiente = casillaActual.casillaODesicionSig(mapa);
-//				if(casillaSiguiente.getPersonajePosicionado() == null) {
-//					casillaActual = casillaSiguiente;
-//					casillaActual.setPersonajePosicionado(this);
-//					mapa.redibujar();
-//				}else if(i == posiciones - 1){//Hay colision
-//					System.out.println(casillaSiguiente.getPersonajePosicionado().nombre +" fue PISADO retrocede 2 casillas");
-//					casillaSiguiente.getPersonajePosicionado().retroceder(2, mapa);
-//				}
-//			}
-//			this.llegar(true);
-//		}else {
-//			// no avanza jugador paralizado
-//			System.out.println(this.nombre +" no puede avanzar esta PARALIZADO");
-//			this.curarParalisis(1);
-//		}
-//	}
-
-//	public void llegar(boolean llegarConEfecto) {
-//		if(llegarConEfecto) {
-//			casillaActual.aplicarEfecto(this);
-//			System.out.println("efecto de la casilla");	
-//		}
-//	}
-	/////////////////////////////////////////////////////////////////////////////////////////
 public void retroceder(int posiciones, Mapa mapa) {
 		Personaje pjAux;
 		casillaActual.desocuparCasilla(this);
@@ -160,6 +113,14 @@ public void retroceder(int posiciones, Mapa mapa) {
 		if (puedeMoverse()) {
 			Personaje pjAux;
 			casillaActual.desocuparCasilla(this);
+			for (int i = 0; i < casillasExtras ; i++) {
+				this.casillaActual = this.casillaActual.casillaODesicionSig(mapa, this);
+				pjAux = this.casillaActual.getPersonajePosicionado();
+				this.casillaActual.setPersonajePosicionado(this);
+				mapa.redibujar();
+				this.casillaActual.setPersonajePosicionado(pjAux);
+			}
+			setCasillasExtras(0);
 			for (int i = 0; i < posiciones; i++) {
 				this.casillaActual = this.casillaActual.casillaODesicionSig(mapa, this);
 				pjAux = this.casillaActual.getPersonajePosicionado();
@@ -187,45 +148,39 @@ public void retroceder(int posiciones, Mapa mapa) {
 		}
 		if(llegarConEfecto) {
 			casillaActual.aplicarEfecto(this);
-			System.out.println("efecto de la casilla");
 		}
 	}
 	
-	////////////////////////////////////////////////////////////////////////////////////////
-	
-	//falta testear
 	public void recogerItem(Articulo articulo) {
 		this.items.add(articulo);
 	}
 
 	public Personaje seleccionarPersonaje(List<Personaje> jugadores) {
-		int i = 0, num;
+		int i = 0;
+		String[] pjs = new String[jugadores.size()];
 		for (Personaje pj : jugadores) {
-			System.out.println(i + " : " + pj.nombre);
+			pjs[i] = pj.getNombre();
 			i++;
 		}
-		System.out.println("Elige un personaje :");
-		// Eleccion por teclado , nunca a uno mismo
-		num = 1;
-		return jugadores.get(num);
+		String resp = (String) JOptionPane.showInputDialog(null, "Seleccione el personaje a aplicar el item", "Items", JOptionPane.DEFAULT_OPTION,null,pjs,pjs[0]);
+		for(i = 0;i < jugadores.size() ; i++) {
+			if(pjs[i] == resp) {
+				return jugadores.get(i);
+			}
+		}
+		return null;
 	}
-	
-
 
 	public int elegirItem() {
-		int indice = 1;
-		Scanner entradaEscaner;
-		int itemSel;
-		if (this.items.size() != 0) {
-			for (Articulo art : this.items) {
-				System.out.println("Elija un item:");
-				System.out.println(indice + "-" + art.getClass().getName());
-
+		String[] items = new String[getItems().size()];
+		for(int i = 0 ; i < getItems().size(); i++) {
+			items[i] = getItems().get(i).getNombre();
+		}
+		String resp = (String) JOptionPane.showInputDialog(null, "Seleccione un item a utilizar", "Items", JOptionPane.DEFAULT_OPTION,null,items,items[0]);
+		for(int i = 0; i< getItems().size(); i++) {
+			if(resp == items[i]) {
+				return i;
 			}
-			entradaEscaner = new Scanner(System.in);
-			itemSel = entradaEscaner.nextInt();
-			entradaEscaner.close();
-			return itemSel - 1;
 		}
 		return -1;
 	}
@@ -290,6 +245,14 @@ public void retroceder(int posiciones, Mapa mapa) {
 	
 	public void setCasillasExtras(int cas) {
 		this.casillasExtras = cas;
+	}
+
+	public List<Articulo> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Articulo> items) {
+		this.items = items;
 	}
 
 

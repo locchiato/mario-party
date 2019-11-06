@@ -1,6 +1,5 @@
 package entities;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -12,6 +11,8 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import javax.swing.JOptionPane;
+
 import entities.Dado;
 import entities.Jugador;
 import entities.Minijuego;
@@ -22,19 +23,24 @@ import entities.casilla.CasillaParalizar;
 import entities.casilla.CasillaSumarRestarMonedas;
 import entities.threads.EsperarThread;
 import ui.EscucharTeclaInterface;
+import ui.InformeFrame;
 import ui.MarioJFrame;
+import ui.MarioStatsFrame;
+import ui.TirarDadoFrame;
 
-public class Mapa implements EscucharTeclaInterface{
+public class Mapa implements EscucharTeclaInterface {
 
 	private Dado dado;
 	private Casilla[][] tablero;
 	private List<Personaje> jugadores = new LinkedList<Personaje>();
 	private List<Minijuego> minijuegos = new ArrayList<Minijuego>();
 	private int cantidadRondas;
-	private int estrellasVictoria = 10;
+	private int estrellasVictoria = 5;
 	private Casilla casillaInicio;
 	private MarioJFrame jFrame;
-	
+	private MarioStatsFrame statsFrame;
+	private TirarDadoFrame dadoFrame;
+	private InformeFrame infoFrame;
 	private int teclaPresionada = -1;
 
 	// Constructor , aca comienza la partida
@@ -51,7 +57,6 @@ public class Mapa implements EscucharTeclaInterface{
 		}
 
 		ordenTurnos();
-		// comentar esta para poder testear los metodos de forma individual
 		inicioJuego();
 	}
 
@@ -70,24 +75,23 @@ public class Mapa implements EscucharTeclaInterface{
 		for (Entry<Integer, Personaje> pj : turnos.entrySet()) {
 			jugOrd.add(pj.getValue());
 		}
-		
-		//imprimir orden
-		
+
+		// imprimir orden
+
 		for (Personaje personaje : jugOrd) {
 			System.out.println(personaje.getNombre() + " Estrellas: " + personaje.getEstrellas() + " Monedas: "
-					+ personaje.getMonedas()+" Estado: " + personaje.getEstado());
+					+ personaje.getMonedas() + " Estado: " + personaje.getEstado());
 		}
-		
-		
+
 		this.jugadores = jugOrd;
 	}
 
 	// Cargar casillas con efectos aleatorios
 
 	public void rellenarCasillas() throws FileNotFoundException {
-		//WINDOWS
-		//String Path = "recursos\\Tableros\\";
-		//MAC
+		// WINDOWS
+		// String Path = "recursos\\Tableros\\";
+		// MAC
 		String Path = "recursos/Tableros/";
 		// String Path = "..\\..\\..\\recursos\\Tableros\\";
 		Scanner sc = new Scanner(new File(Path + "tablero3.txt"));
@@ -185,17 +189,19 @@ public class Mapa implements EscucharTeclaInterface{
 	}
 
 	public void inicioJuego() {
-		//Se dibuja la ventana
-		
+		// Se dibuja la ventana
+
 		jFrame = new MarioJFrame(tablero, tablero.length, this);
-		
+		statsFrame = new MarioStatsFrame(jugadores, jugadores.size());
+		infoFrame = new InformeFrame(jugadores,jugadores.size());
 		// Aca se van a jugar las rondas hasta ver quien gana
 		// rondas del juego
 		for (int i = 0; i < cantidadRondas; i++) {
 
 			for (Personaje personaje : jugadores) {
 				System.out.println();
-				System.out.println("TURNO JUGADOR: "+ personaje.getNombre());
+				System.out.println("TURNO JUGADOR: " + personaje.getNombre());
+				infoFrame.setJugAct(personaje);
 				System.out.println();
 				this.iniciaTurno(personaje);
 			}
@@ -209,16 +215,18 @@ public class Mapa implements EscucharTeclaInterface{
 		// fin del juego
 		this.definirPosiciones();
 	}
-	
+
 	public void redibujar() {
 		long tiempo = 500;
-		
+
 		jFrame.redibujar(tablero);
+		statsFrame.redibujar(jugadores);
+		infoFrame.redibujar(jugadores);
 		new EsperarThread(tiempo).run();
 	}
 
 	public void definirPosiciones() {
-		
+
 		System.out.println();
 		System.out.println();
 		System.out.println();
@@ -230,12 +238,12 @@ public class Mapa implements EscucharTeclaInterface{
 		System.out.println("------------ Posiciones---------");
 		System.out.println();
 		System.out.println();
-		
+
 		Collections.sort(jugadores);
 
 		for (Personaje personaje : jugadores) {
 			System.out.println(personaje.getNombre() + " Estrellas: " + personaje.getEstrellas() + " Monedas: "
-					+ personaje.getMonedas()+" Estado: " + personaje.getEstado());
+					+ personaje.getMonedas() + " Estado: " + personaje.getEstado());
 		}
 
 	}
@@ -251,42 +259,45 @@ public class Mapa implements EscucharTeclaInterface{
 	}
 
 	private void iniciaTurno(Personaje personaje) {
-		// usa item?
-//		Scanner entrada = new Scanner(System.in);
-//		System.out.print("Prefiere usar un item en este turno? : 1 - SI , Otro - NO");
-//		int respuesta = entrada.nextInt();
-//		if (respuesta == 1) {
-//			System.out.println("Eligio usar un item");
-//			int item = personaje.elegirItem();
-//			personaje.usarItem(item, this.jugadores);
-//		} else {
-//			System.out.println("No usara un item en este turno");
-//		}
-//		entrada.close();
+		// usa item
+		infoFrame.setEstado("com");
+		infoFrame.actLabel();
+		int item = -1;
+		if (personaje.getItems().size() > 0) {
+			infoFrame.setEstado("seleccion");
+			int respItem = JOptionPane.showConfirmDialog(null, "¿Prefiere usar un item en este turno?", "Alerta!",
+					JOptionPane.YES_NO_OPTION);
+			if (respItem == 0) {
+				// Seleccionar item
+				item = personaje.elegirItem();
+				personaje.usarItem(item,this.jugadores);
+			}
+		}
 		// tira el dado
 		System.out.println("El jugador " + personaje.getNombre() + " tira el dado");
-		int valorDado = this.dado.tirarDado();
+		dadoFrame = new TirarDadoFrame(personaje, this.dado);
+		int valorDado = 0;
+		while (dadoFrame.getValor() == -1) {
+			new EsperarThread(50).run();
+		}
+		valorDado = dadoFrame.getValor();
+		dadoFrame.dispose();
+		infoFrame.setEstado("avanza");
+		infoFrame.setValor(valorDado);
+		infoFrame.actLabel();
 		System.out.println("El jugador " + personaje.getNombre() + " ha sacado " + valorDado);
-		//Mostrar Dado
-		
+		// Mostrar Dado
+
 		// avanza
 		personaje.avanzar(valorDado, this);
+		infoFrame.setEstado("cas");
+		infoFrame.actLabel();
 	}
 
 	public void finRonda() {
-
-
-			
-		
-	}
-	
-	private List<Integer> tirarDados() {
-		List<Integer> dados = new ArrayList<>(); 
-		for(Personaje personaje : this.jugadores) {
-			dados.add(this.dado.tirarDado());
-		}
-			
-		return dados;
+		// Aca se jugara el minijuego entre los personajes , las recompensas y perdidas
+		// se veran
+		// segun el minijuego jugado
 
 	}
 
@@ -345,9 +356,9 @@ public class Mapa implements EscucharTeclaInterface{
 	}
 
 	public void escucharTeclas() {
-		
+
 		jFrame.escucharTeclas();
-		
+
 	}
 
 	@Override

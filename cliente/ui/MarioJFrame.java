@@ -22,6 +22,31 @@ public class MarioJFrame extends JFrame {
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 
+	
+	public MarioJFrame(Socket socket,ObjectOutputStream out, ObjectInputStream in) {
+		// Full Screen
+		//setExtendedState(MAXIMIZED_BOTH);
+		setSize(500,500);
+
+		// cerrar con la X la ventana
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		setTitle(Textos.TITULO_PRINCIPAL);
+		setLocationRelativeTo(null);
+
+		this.socket=socket;
+		this.in=in;
+		this.out=out;
+		
+		
+		
+		HiloDeJuego();
+		
+		
+		
+	}
+
+	
 	public MarioJFrame(Casilla[][] tablero, int cantidadCasillas, EscucharTeclaInterface escucharTeclaInterface) {
 		// Full Screen
 		//setExtendedState(MAXIMIZED_BOTH);
@@ -33,6 +58,8 @@ public class MarioJFrame extends JFrame {
 		setTitle(Textos.TITULO_PRINCIPAL);
 		setLocationRelativeTo(null);
 
+	
+		
 		panel = new MarioJPanel(tablero, cantidadCasillas);
 		setContentPane(panel);
 

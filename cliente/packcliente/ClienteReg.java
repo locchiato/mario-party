@@ -66,12 +66,14 @@ public class ClienteReg extends JFrame {
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					 miSocket=new Socket("localhost",5000);
+					 miSocket=new Socket("127.0.0.1",5000);
 
 					out = new ObjectOutputStream(miSocket.getOutputStream());
 					in = new ObjectInputStream( miSocket.getInputStream() );
 					
 					darAltaJugador();
+					
+					btnEntrar.setEnabled(false);;;
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

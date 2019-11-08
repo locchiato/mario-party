@@ -8,8 +8,8 @@ import java.net.Socket;
 
 public class AltaJugador implements Serializable {
 
-	String nick;
-	Color color;
+	private String nick;
+	private Color color;
 	private Socket socket;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;

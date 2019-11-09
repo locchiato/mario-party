@@ -302,6 +302,11 @@ public class Mapa implements EscucharTeclaInterface {
 
 	}
 
+	
+	public void iniciarMiniJuego(int opcion) {
+		minijuegos.get(opcion).jugar(jugadores);;
+	}
+	
 	// Getter y Setter (ver cuales no hacen falta y borrarlos)
 
 	public Casilla obtenerCasilla(int x, int y) {

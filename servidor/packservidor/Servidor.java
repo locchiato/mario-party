@@ -1,9 +1,11 @@
 package packservidor;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.*;
 import java.util.*;
 
+import comunicaciones.AltaJugador;
 import entities.Jugador;
 import entities.Mapa;
 
@@ -17,7 +19,7 @@ public class Servidor {
 
 	// ARRAYLIST DE LAS PERSONAS QUE SE CONECTAN A LA PARTIDA
 	private ArrayList<Socket> usuarios;
-private ArrayList<Jugador>jugadores;
+	private ArrayList<Jugador> jugadores;
 	// FRAME PARA LA VISUALIZACION DEL SERVER
 	private ServidorFrame frame;
 
@@ -25,7 +27,7 @@ private ArrayList<Jugador>jugadores;
 		this.frame = f;
 
 		usuarios = new ArrayList<Socket>();
-jugadores=new ArrayList<Jugador>();
+		jugadores = new ArrayList<Jugador>();
 		try {
 			// GENERO EL SERVERSOCKET
 			sSocket = new ServerSocket(PUERTO);
@@ -40,7 +42,7 @@ jugadores=new ArrayList<Jugador>();
 
 				frame.mostrarMensajeFrame("Se conecto: " + clientSocket.getInetAddress().getHostAddress());
 				usuarios.add(clientSocket);
-				HiloDeCliente hilo = new HiloDeCliente(clientSocket, usuarios, frame,this);
+				HiloDeCliente hilo = new HiloDeCliente(clientSocket, usuarios, frame, this);
 				hilo.start();
 				// MANDO A EJECUTAR EL HILO
 				// VUELVO AL PRINCIPIO DEL WHILE A EMPEZAR A ESCUCHAR DE NUEVO
@@ -59,25 +61,24 @@ jugadores=new ArrayList<Jugador>();
 		this.jugadores = jugadores;
 	}
 
-	
-	public void verComienzoJuego() throws FileNotFoundException {
-		if(jugadores.size()==3) {
-			Mapa juegoSuperMario=new Mapa(jugadores, 20);
+	public void verComienzoJuego() throws IOException {
+		if (jugadores.size() == 3) {
+
+			for (Jugador j : jugadores) {
+
+				j.getOut().writeObject(new AltaJugador());
+			}
+
+			// Mapa juegoSuperMario=new Mapa(jugadores, 20);
 		}
 	}
-	
-	
-	
-	
+
 	public static void main(String[] args) {
 		@SuppressWarnings("unused")
 		Servidor sv = new Servidor(new ServidorFrame());
 
 	}
-	
 
-	
-	
 	/////////////////// METODOS PARA EL MANEJO DE BASE DE DATOS/////////
 	public void desconectar() {
 		// MySQLConnection.close();

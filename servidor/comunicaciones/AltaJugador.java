@@ -14,7 +14,10 @@ public class AltaJugador implements Serializable {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	
-	
+	public AltaJugador() {
+		
+
+	}
 	public AltaJugador(String nick, Color color) {
 		super();
 		this.nick = nick;

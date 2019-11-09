@@ -40,7 +40,7 @@ public class MarioJFrame extends JFrame {
 		
 		
 		
-		HiloDeJuego();
+	
 		
 		
 		
@@ -112,31 +112,7 @@ public class MarioJFrame extends JFrame {
 	
 	
 	
-	public void HiloDeJuego() {
-		Thread hiloDeJuego = new Thread(new Runnable() {
-			
-
-			public void run() {
-				Object peticion = null;
-				while (true) {
-					try {
-						peticion = in.readObject();
-					} catch (ClassNotFoundException | IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					switch (peticion.getClass().getSimpleName()) {
-					case "Devolver":
-						System.out.println("Recibo de vuelta string");
-
-						break;
-					}
-				} // FIN WHILE TRUE
-			}
-
-		});
-		hiloDeJuego.start();
-	}
+	
 	
 
 }

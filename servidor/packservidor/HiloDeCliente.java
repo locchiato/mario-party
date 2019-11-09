@@ -61,6 +61,7 @@ public class HiloDeCliente extends Thread {
 				case "AltaJugador":
 					altaJugador((AltaJugador) peticion);
 					System.out.println("Recibido");
+					
 					break;
 			
 				}
@@ -71,13 +72,13 @@ public class HiloDeCliente extends Thread {
 		}
 	}
 
-	private void altaJugador(AltaJugador peticion) throws FileNotFoundException {
+	private void altaJugador(AltaJugador peticion) throws IOException {
 		System.out.println(peticion.getNick() + peticion.getColor().toString());
 		servidor.getJugadores().add(new Jugador(peticion.getNick(), peticion.getColor(), clientSocket, in, out));
 		preguntarComienzoJuego();
 	}
 
-	private void preguntarComienzoJuego() throws FileNotFoundException {
+	private void preguntarComienzoJuego() throws IOException {
 		servidor.verComienzoJuego();
 	}
 

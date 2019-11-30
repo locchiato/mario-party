@@ -9,42 +9,19 @@ import conexion.shared.NetworkMessage;
 public class ClientProtocol {
 	public static void processInput(String input) {
 		NetworkMessage message = (new Gson()).fromJson(input, NetworkMessage.class);
-		if(message.getLoginType().equals(NetworkLoginType.LOGIN)) {
-			//LOGIN
-			switch (message.getType()) {
-			case NEW:
-				//processNew(caller, message);
-				break;
-				}
-		}else {
-			//GAME
-			switch (message.getType()) {
-			case NEW:
-				//processNew(caller, message);
-				break;
-				/*case MSG:
-				processMessage(caller, message);
-				break;
-			case MOV:
-				processMovement(caller, message);
-				break;
-			case PAU:
-				processPause(caller, message);
-				break;
-			case BYE:
-				processQuit(caller, message);
-				break;
-			case PNG:
-				processPing(caller, message);
-				break;
-			case SNC:
-				processSync(caller, message);
-				break;
-			*/
-				}
+		switch (message.getType()) {
+		case LOGIN:
+			// processNew(caller, message);
+			break;
+		/*
+		 * case MSG: processMessage(caller, message); break; case MOV:
+		 * processMovement(caller, message); break; case PAU: processPause(caller,
+		 * message); break; case BYE: processQuit(caller, message); break; case PNG:
+		 * processPing(caller, message); break; case SNC: processSync(caller, message);
+		 * break;
+		 */
 		}
 	}
-
 //	private static void processNew(NetworkMessage message) {
 //		BallList.getInstance().getBall(message.getIdClient()).setInfo((String) message.getMessage());
 //	}

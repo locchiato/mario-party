@@ -23,9 +23,9 @@ public class ServerThread extends Thread {
 			this.output = new PrintWriter(clientSocket.getOutputStream(), true);
 			this.id = id;
 			this.send("" + id);
-			BallList.getInstance().getHashBalls().forEach((ballId, ball) -> {
-				this.send((new Gson()).toJson(new NetworkMessage(NetworkMessageType.NEW, ballId, ball.getInfo())));
-			});
+//			BallList.getInstance().getHashBalls().forEach((ballId, ball) -> {
+//				this.send((new Gson()).toJson(new NetworkMessage(NetworkMessageType.NEW, ballId, ball.getInfo())));
+//			});
 
 		} catch (IOException e) {
 			System.out.println("Se desconecto el cliente " + this.id + " cuando estaba iniciando");
@@ -63,6 +63,6 @@ public class ServerThread extends Thread {
 	public void close() {
 		this.interrupt();
 		BallList.getInstance().destroyBall(id);
-		Server.broadcast((new Gson()).toJson(new NetworkMessage(NetworkMessageType.BYE, id)));
+		//Server.broadcast((new Gson()).toJson(new NetworkMessage(NetworkMessageType.BYE, id)));
 	}
 }

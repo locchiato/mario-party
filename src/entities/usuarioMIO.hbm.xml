@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-mapping>
+	<class name="entities.Usuario" table="USUARIO">
+		<id column="Nombre" name="nombre" type="string" />
+		<property column="Contracenia" name="contracenia" type="string" />
+	</class>
+	
+	<query name="NombreUsuarios"><![CDATA[SELECT u.nombre FROM Usuario u]]></query>
+</hibernate-mapping>

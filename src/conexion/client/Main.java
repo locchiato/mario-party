@@ -1,6 +1,7 @@
 package conexion.client;
 
 import conexion.shared.Global;
+import ventana.login.Login;
 
 public class Main {
 
@@ -9,8 +10,10 @@ public class Main {
 		client.connect();
 		Thread serverListener = new ServerListener(client);
 		serverListener.start();
-		RunnableGame game = new RunnableGame(client);
-		game.init();
-		game.run();
+		Login ventanaLogin = new Login(client);
+		ventanaLogin.setVisible(true);
+//		RunnableGame game = new RunnableGame(client);
+//		game.init();
+//		game.run();
 	}
 }

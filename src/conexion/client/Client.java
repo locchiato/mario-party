@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
 
+import conexion.shared.NetworkLoginType;
 import conexion.shared.NetworkMessage;
 import conexion.shared.NetworkMessageType;
 
@@ -54,9 +55,8 @@ public class Client {
 			Runnable processSync = () -> {
 				synchronize();
 			};
-			executorServiceSync.scheduleWithFixedDelay(processSync, 0, 10, TimeUnit.SECONDS);
-
-			this.send(NetworkMessageType.NEW);
+			executorServiceSync.scheduleWithFixedDelay(processSync, 0, 10, TimeUnit.SECONDS);	
+			
 		} catch (Exception ex) {
 			System.out.println("Fallo al recibir del servidor");
 			ex.printStackTrace();
@@ -69,7 +69,7 @@ public class Client {
 	}
 
 	public void send(NetworkMessageType type, Object message) {
-		output.println((new Gson()).toJson(new NetworkMessage(type, message)));
+		output.println((new Gson()).toJson(new NetworkMessage(type, message,NetworkLoginType.GAME)));
 	}
 
 	public void send(NetworkMessageType type) {
@@ -77,7 +77,7 @@ public class Client {
 	}
 	
 	public void sendLogin(NetworkMessageType type, Object message) {
-		output.println((new Gson()).toJson(new NetworkMessage(type, message)));
+		output.println((new Gson()).toJson(new NetworkMessage(type, message,NetworkLoginType.LOGIN)));
 	}
 
 	public void sendLogin(NetworkMessageType type) {

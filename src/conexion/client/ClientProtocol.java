@@ -1,18 +1,24 @@
 package conexion.client;
 
+import javax.swing.JOptionPane;
+
 import com.google.gson.Gson;
 
-import conexion.shared.BallList;
-import conexion.shared.NetworkLoginType;
+import conexion.server.RespuestaLogueo;
 import conexion.shared.NetworkMessage;
+import ventana.login.LoginIncorrecto;
 
 public class ClientProtocol {
-	public static void processInput(String input) {
+	public static void processInput(String input) throws Exception {
 		NetworkMessage message = (new Gson()).fromJson(input, NetworkMessage.class);
+		
 		switch (message.getType()) {
 		case LOGIN:
+			login((RespuestaLogueo) message.getMessage());
 			// processNew(caller, message);
 			break;
+		default:
+			throw new Exception("Caso fallido");
 		/*
 		 * case MSG: processMessage(caller, message); break; case MOV:
 		 * processMovement(caller, message); break; case PAU: processPause(caller,
@@ -50,4 +56,15 @@ public class ClientProtocol {
 //		Double elapsedTime = (Double) message.getMessage();
 //		Client.getInstance().setGameTimeStart(elapsedTime.longValue());
 //	}
+
+	private static void login(RespuestaLogueo respuestaLogueo) {
+		if (respuestaLogueo.getRespuesta()) {
+			JOptionPane.showMessageDialog(null, "Operaci�n realizada correctamente");
+			// abro el lobby de las Salas
+		} else {
+			LoginIncorrecto er = new LoginIncorrecto();
+			er.setVisible(true);
+		}
+
+	}
 }

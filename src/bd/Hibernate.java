@@ -23,8 +23,11 @@ public class Hibernate {
 	public Hibernate(String conexion) {
 		
 		this.cfg = new Configuration();
+		System.out.println("LA CONCHA DE LA LORA 1");
 		this.cfg.configure(conexion);
+		System.out.println("LA CONCHA DE LA LORA 2");
 		this.factory = cfg.buildSessionFactory();
+		System.out.println("LA CONCHA DE LA LORA 3");
 		this.session = factory.openSession();
 	}
 	

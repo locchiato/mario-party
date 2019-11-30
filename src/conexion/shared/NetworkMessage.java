@@ -3,36 +3,18 @@ package conexion.shared;
 public class NetworkMessage {
 	private long time;
 	private NetworkMessageType type;
-	private NetworkLoginType loginType;
 	private int idClient;
 	private Object message;
 
-	public NetworkMessage(NetworkMessageType type, int idClient, Object message, NetworkLoginType loginType) {
+	public NetworkMessage(NetworkMessageType type, int idClient, Object message) {
 		this.time = System.nanoTime();
 		this.type = type;
 		this.idClient = idClient;
 		this.message = message;
-		this.loginType = loginType;
-	}
-
-	public NetworkMessage(NetworkMessageType type, Object message, NetworkLoginType loginType) {
-		this(type, 0, message, loginType);
-	}
-
-	public NetworkMessage(NetworkMessageType type, int idClient, NetworkLoginType loginType) {
-		this(type, idClient, null, loginType);
-	}
-
-	public NetworkMessage(NetworkMessageType type, NetworkLoginType loginType) {
-		this(type, 0, null, loginType);
 	}
 
 	public NetworkMessageType getType() {
 		return type;
-	}
-	
-	public NetworkLoginType getLoginType() {
-		return loginType;
 	}
 
 	public long getTime() {

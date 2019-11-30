@@ -9,7 +9,6 @@ import javax.swing.border.EmptyBorder;
 
 import bd.Hibernate;
 import conexion.client.Client;
-import conexion.shared.NetworkLoginType;
 import conexion.shared.NetworkMessageType;
 import entities.Usuario;
 
@@ -53,7 +52,7 @@ public class Login extends JFrame {
 	public Login(Client cliente) {
 		this.cliente = cliente;
 		setTitle("McFly Party");
-		this.setResizable(false); // para no modificar el tamaño
+		this.setResizable(false); // para no modificar el tamaï¿½o
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 305, 239);
 		this.setLocationRelativeTo(null); // para que aparesca centro de la pantalla
@@ -93,7 +92,9 @@ public class Login extends JFrame {
 					cv.setVisible(true);
 				} else {
 					Usuario usuario = new Usuario(nombre, contracenia);
-					cliente.sendLogin(NetworkMessageType.LOGIN,usuario);
+					cliente.send(NetworkMessageType.LOGIN,usuario);
+					
+					dispose();
 					// en Cliente-Servidor aca envio el mensaje para validar datos del usuario en la
 					// base de datos
 
@@ -102,7 +103,7 @@ public class Login extends JFrame {
 //					boolean respuesta = bd.usuarioValidar(usuario);
 
 //					if (respuesta) {
-//						JOptionPane.showMessageDialog(null, "Operación realizada correctamente");
+//						JOptionPane.showMessageDialog(null, "Operaciï¿½n realizada correctamente");
 //						dispose();
 //						// abro el lobby de las Salas
 //					} else {

@@ -9,8 +9,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
-
-import conexion.shared.NetworkLoginType;
 import conexion.shared.NetworkMessage;
 import conexion.shared.NetworkMessageType;
 
@@ -69,21 +67,17 @@ public class Client {
 	}
 
 	public void send(NetworkMessageType type, Object message) {
-		output.println((new Gson()).toJson(new NetworkMessage(type, message,NetworkLoginType.GAME)));
+		output.println((new Gson()).toJson(new NetworkMessage(type, id, message)));
 	}
 
 	public void send(NetworkMessageType type) {
 		this.send(type, null);
 	}
+
+	public void sendAll(NetworkMessageType type, Object message) {
+		output.println((new Gson()).toJson(new NetworkMessage(type, 0, message)));
+	}
 	
-	public void sendLogin(NetworkMessageType type, Object message) {
-		output.println((new Gson()).toJson(new NetworkMessage(type, message,NetworkLoginType.LOGIN)));
-	}
-
-	public void sendLogin(NetworkMessageType type) {
-		this.send(type, null);
-	}
-
 	public void askPing() {
 		this.timeAsked = System.nanoTime();
 		this.send(NetworkMessageType.PNG);

@@ -12,7 +12,6 @@ import conexion.shared.BallMovementType;
 import conexion.shared.NetworkMessage;
 import conexion.shared.NetworkMessageType;
 import entities.Usuario;
-import conexion.shared.NetworkLoginType;
 import conexion.shared.Ball;
 
 public class ServerProtocol {
@@ -22,10 +21,15 @@ public class ServerProtocol {
 			switch (message.getType()) {
 			case LOGIN:
 				Hibernate bd = new Hibernate("hibernateMIO.cfg.xml");
+				
+				System.out.println("LA CONCHA DE LA LORA");
+				
 				boolean respuesta = bd.usuarioValidar((Usuario)message.getMessage());
-				RespuestaLogueo res = new RespuestaLogueo();
-				caller.send((new Gson()).toJson(new NetworkMessage(NetworkMessageType.LOGIN)));
+				RespuestaLogueo res = new RespuestaLogueo(message.getIdClient(), respuesta);
+				caller.send((new Gson()).toJson(new NetworkMessage(NetworkMessageType.LOGIN, message.getIdClient(), res)));
 				break;
+			default:
+				throw new Exception("Caso fallido");
 			/*
 			 * case MSG: processMessage(caller, message); break; case MOV:
 			 * processMovement(caller, message); break; case PAU: processPause(caller,
